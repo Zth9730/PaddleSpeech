@@ -4,7 +4,7 @@ set -e
 . ./path.sh || exit 1;
 . ./cmd.sh || exit 1;
 
-gpus=
+gpus=1,2
 stage=1
 stop_stage=50
 conf_path=conf/wav2vec2ASR.yaml

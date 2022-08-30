@@ -2,7 +2,7 @@
 source path.sh
 set -e
 
-gpus=0,1,2,3
+gpus=0,1,2
 stage=1
 stop_stage=50
 conf_path=conf/conformer.yaml

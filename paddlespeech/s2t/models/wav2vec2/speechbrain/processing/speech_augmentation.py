@@ -70,8 +70,8 @@ class SpeedPerturb(nn.Layer):
 
         # Don't perturb (return early) 1-`perturb_prob` portion of the batches
         if paddle.rand([1]) > self.perturb_prob:
+        
             return waveform.clone()
-
         # Perform a random perturbation
         self.samp_index = paddle.randint(len(self.speeds), shape=(1,))[0]
         perturbed_waveform = self.resamplers[self.samp_index](waveform)
@@ -736,15 +736,10 @@ class TimeDomainSpecAugment(nn.Layer):
         """
         # Augmentation
         with paddle.no_grad():
-            print(waveforms)
             waveforms = self.speed_perturb(waveforms)
-            print(waveforms)
 
 
             waveforms = self.drop_freq(waveforms)
-            print(waveforms)
 
             waveforms = self.drop_chunk(waveforms, lengths)
-            print(waveforms)
-            exit()
         return waveforms

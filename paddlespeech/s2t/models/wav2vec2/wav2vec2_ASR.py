@@ -55,13 +55,10 @@ class Wav2vec2ASR(nn.Layer):
         feats = out
 
         x = self.enc(feats)
-        print ("wavs_lens_rate", wavs_lens_rate)
-        print ("x lens", x.shape[1])
         x_lens = (wavs_lens_rate * x.shape[1]).round().astype(paddle.int64)
         target_lens = (target_lens_rate * target.shape[1]).round().astype(paddle.int64)
         
         ctc_loss = self.ctc(x, x_lens, target, target_lens)
-        print ("ctc_loss", ctc_loss)
         return ctc_loss
 
     def decode(self, wav, wavs_lens_rate):

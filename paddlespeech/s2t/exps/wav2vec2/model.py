@@ -253,7 +253,7 @@ class Wav2Vec2ASRTrainer(Trainer):
 
 
         if self.parallel:
-            model = paddle.DataParallel(model)
+            model = paddle.DataParallel(model, find_unused_parameters=True)
 
         logger.info(f"{model}")
         layer_tools.print_params(model, logger.info)

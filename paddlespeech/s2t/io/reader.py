@@ -120,6 +120,7 @@ class LoadInputsAndTargets():
                     x = self._get_from_loader(
                         filepath=inp["feat"],
                         filetype=inp.get("filetype", "mat"))
+
                     x_feats_dict.setdefault(inp["name"], []).append(x)
 
             if self.load_output:
@@ -236,6 +237,7 @@ class LoadInputsAndTargets():
         :return:
         :rtype: np.ndarray
         """
+
         if filetype == "hdf5":
             # e.g.
             #    {"input": [{"feat": "some/path.h5:F01_050C0101_PED_REAL",
@@ -269,10 +271,10 @@ class LoadInputsAndTargets():
             #                "filetype": "sound"},
             # Assume PCM16
             if not self.keep_all_data_on_mem:
-                array, _ = soundfile.read(filepath, dtype="int16")
+                array, _ = soundfile.read(filepath, dtype="float32")
                 return array
             if filepath not in self._loaders:
-                array, _ = soundfile.read(filepath, dtype="int16")
+                array, _ = soundfile.read(filepath, dtype="float32")
                 self._loaders[filepath] = array
             return self._loaders[filepath]
         elif filetype == "npz":

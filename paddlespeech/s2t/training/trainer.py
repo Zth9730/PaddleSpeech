@@ -130,7 +130,9 @@ class Trainer():
             latest_n=self.config.checkpoint.latest_n)
 
         # set random seed if needed
+        print(args.seed)
         if args.seed:
+            print('***********')
             seed_all(args.seed)
             logger.info(f"Set seed {args.seed}")
 

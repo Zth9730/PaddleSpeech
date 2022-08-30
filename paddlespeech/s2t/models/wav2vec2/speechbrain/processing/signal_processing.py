@@ -7,9 +7,23 @@ Authors
  * Samuele Cornell 2020
  * Sarthak Yadav 2022
 """
-import torch
+import paddle
 import math
 from packaging import version
+import numpy as np
+
+
+def blackman_window(window_length, periodic=True):
+    if window_length == 0:
+        return []
+    if window_length == 1:
+        return paddle.ones([1])
+    if periodic:
+        window_length += 1
+    
+    window = paddle.arange(window_length) * (np.pi / (window_length - 1))
+    window = 0.08 * paddle.cos(window * 4) - 0.5 * paddle.cos(window * 2) + 0.42
+    return window[:-1] if periodic else window
 
 
 def compute_amplitude(waveforms, lengths=None, amp_type="avg", scale="linear"):
@@ -46,19 +60,19 @@ def compute_amplitude(waveforms, lengths=None, amp_type="avg", scale="linear"):
 
     if amp_type == "avg":
         if lengths is None:
-            out = torch.mean(torch.abs(waveforms), dim=1, keepdim=True)
+            out = paddle.mean(paddle.abs(waveforms), axis=1, keepdim=True)
         else:
-            wav_sum = torch.sum(input=torch.abs(waveforms), dim=1, keepdim=True)
+            wav_sum = paddle.sum(paddle.abs(waveforms), axis=1, keepdim=True)
             out = wav_sum / lengths
     elif amp_type == "peak":
-        out = torch.max(torch.abs(waveforms), dim=1, keepdim=True)[0]
+        out = paddle.max(paddle.abs(waveforms), axis=1, keepdim=True)[0]
     else:
         raise NotImplementedError
 
     if scale == "linear":
         return out
     elif scale == "dB":
-        return torch.clamp(20 * torch.log10(out), min=-80)  # clamp zeros
+        return paddle.clip(20 * paddle.log10(out), min=-80)  # clamp zeros
     else:
         raise NotImplementedError
 
@@ -119,20 +133,20 @@ def convolve1d(
         raise ValueError("Convolve1D expects a 3-dimensional tensor")
 
     # Move time dimension last, which pad and fft and conv expect.
-    waveform = waveform.transpose(2, 1)
-    kernel = kernel.transpose(2, 1)
+    waveform = waveform.transpose([0, 2, 1])
+    kernel = kernel.transpose([0, 2, 1])
 
     # Padding can be a tuple (left_pad, right_pad) or an int
     if isinstance(padding, tuple):
-        waveform = torch.nn.functional.pad(
-            input=waveform, pad=padding, mode=pad_type,
+        waveform = paddle.nn.functional.pad(
+            x=waveform, pad=padding, mode=pad_type,
         )
 
     # This approach uses FFT, which is more efficient if the kernel is large
     if use_fft:
 
         # Pad kernel to same length as signal, ensuring correct alignment
-        zero_length = waveform.size(-1) - kernel.size(-1)
+        zero_length = waveform.shape[-1] - kernel.shape[-1]
 
         # Handle case where signal is shorter
         if zero_length < 0:
@@ -140,39 +154,39 @@ def convolve1d(
             zero_length = 0
 
         # Perform rotation to ensure alignment
-        zeros = torch.zeros(
-            kernel.size(0), kernel.size(1), zero_length, device=kernel.device
+        zeros = paddle.zeros(
+            kernel.shape[0], kernel.shape[1], zero_length
         )
         after_index = kernel[..., rotation_index:]
         before_index = kernel[..., :rotation_index]
-        kernel = torch.cat((after_index, zeros, before_index), dim=-1)
+        kernel = paddle.concat((after_index, zeros, before_index), axis=-1)
 
         # Multiply in frequency domain to convolve in time domain
-        if version.parse(torch.__version__) > version.parse("1.6.0"):
-            import torch.fft as fft
+        # if version.parse(torch.__version__) > version.parse("1.6.0"):
+        import paddle.fft as fft
 
-            result = fft.rfft(waveform) * fft.rfft(kernel)
-            convolved = fft.irfft(result, n=waveform.size(-1))
-        else:
-            f_signal = torch.rfft(waveform, 1)
-            f_kernel = torch.rfft(kernel, 1)
-            sig_real, sig_imag = f_signal.unbind(-1)
-            ker_real, ker_imag = f_kernel.unbind(-1)
-            f_result = torch.stack(
-                [
-                    sig_real * ker_real - sig_imag * ker_imag,
-                    sig_real * ker_imag + sig_imag * ker_real,
-                ],
-                dim=-1,
-            )
-            convolved = torch.irfft(
-                f_result, 1, signal_sizes=[waveform.size(-1)]
-            )
+        result = fft.rfft(waveform) * fft.rfft(kernel)
+        convolved = fft.irfft(result, n=waveform.shape[-1])
+        # else:
+        #     f_signal = torch.rfft(waveform, 1)
+        #     f_kernel = torch.rfft(kernel, 1)
+        #     sig_real, sig_imag = f_signal.unbind(-1)
+        #     ker_real, ker_imag = f_kernel.unbind(-1)
+        #     f_result = torch.stack(
+        #         [
+        #             sig_real * ker_real - sig_imag * ker_imag,
+        #             sig_real * ker_imag + sig_imag * ker_real,
+        #         ],
+        #         dim=-1,
+        #     )
+        #     convolved = torch.irfft(
+        #         f_result, 1, signal_sizes=[waveform.size(-1)]
+        #     )
 
     # Use the implementation given by torch, which should be efficient on GPU
     else:
-        convolved = torch.nn.functional.conv1d(
-            input=waveform,
+        convolved = paddle.nn.functional.conv1d(
+            x=waveform,
             weight=kernel,
             stride=stride,
             groups=groups,
@@ -180,7 +194,7 @@ def convolve1d(
         )
 
     # Return time dimension to the second dimension.
-    return convolved.transpose(2, 1)
+    return convolved.transpose([0, 2, 1])
 
 
 def notch_filter(notch_freq, filter_width=101, notch_width=0.05):
@@ -210,7 +224,7 @@ def notch_filter(notch_freq, filter_width=101, notch_width=0.05):
     assert 0 < notch_freq <= 1
     assert filter_width % 2 != 0
     pad = filter_width // 2
-    inputs = torch.arange(filter_width) - pad
+    inputs = paddle.arange(filter_width) - pad
 
     # Avoid frequencies that are too low
     notch_freq += notch_width
@@ -220,21 +234,22 @@ def notch_filter(notch_freq, filter_width=101, notch_width=0.05):
         "Computes the sinc function."
 
         def _sinc(x):
-            return torch.sin(x) / x
+            return paddle.sin(x) / x
 
         # The zero is at the middle index
-        return torch.cat([_sinc(x[:pad]), torch.ones(1), _sinc(x[pad + 1 :])])
+        return paddle.concat([_sinc(x[:pad]), paddle.ones([1]), _sinc(x[pad + 1 :])])
 
     # Compute a low-pass filter with cutoff frequency notch_freq.
     hlpf = sinc(3 * (notch_freq - notch_width) * inputs)
-    hlpf *= torch.blackman_window(filter_width)
-    hlpf /= torch.sum(hlpf)
+    hlpf *= blackman_window(filter_width)
+    hlpf /= paddle.sum(hlpf)
 
     # Compute a high-pass filter with cutoff frequency notch_freq.
     hhpf = sinc(3 * (notch_freq + notch_width) * inputs)
-    hhpf *= torch.blackman_window(filter_width)
-    hhpf /= -torch.sum(hhpf)
+    hhpf *= blackman_window(filter_width)
+    hhpf /= -paddle.sum(hhpf)
     hhpf[pad] += 1
 
     # Adding filters creates notch filter
     return (hlpf + hhpf).view(1, -1, 1)
+

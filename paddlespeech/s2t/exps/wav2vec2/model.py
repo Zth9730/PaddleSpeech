@@ -43,6 +43,9 @@ from paddlespeech.s2t.utils.utility import UpdateConfig
 from paddlespeech.s2t.utils import layer_tools
 from paddlespeech.s2t.utils.log import Log
 
+from paddlespeech.s2t.models.wav2vec2.speechbrain.processing.speech_augmentation import TimeDomainSpecAugment
+
+
 
 logger = Log(__name__).getlog()
 
@@ -59,6 +62,7 @@ class Wav2Vec2ASRTrainer(Trainer):
         wavs_lens_rate = wavs_lens / wav.shape[1] 
         target_lens_rate = target_lens / target.shape[1]
         wav = wav[:,:,0]
+        wav = self.speech_augmentation(wav, wavs_lens_rate)
         loss = self.model(wav, wavs_lens_rate, target, target_lens_rate)
 
         # loss div by `batch_size * accum_grad`
@@ -255,6 +259,8 @@ class Wav2Vec2ASRTrainer(Trainer):
         layer_tools.print_params(model, logger.info)
         self.model = model
         logger.info("Setup model!")
+
+        self.speech_augmentation = TimeDomainSpecAugment(sample_rate=16000, speeds=[95, 100, 105])
 
         if not self.train:
             return

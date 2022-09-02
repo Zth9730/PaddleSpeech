@@ -1040,7 +1040,6 @@ class Wav2Vec2Model(nn.Layer):
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
         import numpy as np
         np.save("data/paddle_input_values.npy", input_values.numpy())
-        
         extract_features = self.feature_extractor(input_values)
         extract_features = extract_features.transpose([0, 2, 1])
 

@@ -271,10 +271,10 @@ class LoadInputsAndTargets():
             #                "filetype": "sound"},
             # Assume PCM16
             if not self.keep_all_data_on_mem:
-                array, _ = soundfile.read(filepath, dtype="float32")
+                array, _ = soundfile.read(filepath, dtype="int16")
                 return array
             if filepath not in self._loaders:
-                array, _ = soundfile.read(filepath, dtype="float32")
+                array, _ = soundfile.read(filepath, dtype="int16")
                 self._loaders[filepath] = array
             return self._loaders[filepath]
         elif filetype == "npz":

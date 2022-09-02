@@ -6,7 +6,7 @@ from paddlespeech.s2t.models.wav2vec2.speechbrain.processing.signal_processing i
     compute_amplitude,
     convolve1d,
     notch_filter)
-
+    
 class SpeedPerturb(nn.Layer):
     """Slightly speed up or slow down an audio signal.
     Resample the audio signal at a rate that is similar to the original rate,
@@ -736,10 +736,13 @@ class TimeDomainSpecAugment(nn.Layer):
         """
         # Augmentation
         with paddle.no_grad():
+            print(waveforms[0])
             waveforms = self.speed_perturb(waveforms)
-
+            print(waveforms[0])
 
             waveforms = self.drop_freq(waveforms)
+            print(waveforms[0])
 
             waveforms = self.drop_chunk(waveforms, lengths)
+            print(waveforms[0])
         return waveforms

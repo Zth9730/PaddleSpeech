@@ -4,22 +4,20 @@ set -e
 . ./path.sh || exit 1;
 . ./cmd.sh || exit 1;
 
-gpus=3
-stage=3
+gpus=1
+stage=1
 stop_stage=50
 conf_path=conf/wav2vec2ASR.yaml
 ips=            #xx.xx.xx.xx,xx.xx.xx.xx
 decode_conf_path=conf/tuning/decode.yaml
-avg_num=1
+avg_num=30
 audio_file=data/demo_002_en.wav
-dict_path=data/lang_char/vocab.txt
 
 . ${MAIN_ROOT}/utils/parse_options.sh || exit 1;
 
 avg_ckpt=avg_${avg_num}
 ckpt=$(basename ${conf_path} | awk -F'.' '{print $1}')
 echo "checkpoint name ${ckpt}"
-ckpt_prefix=exp/${ckpt}/checkpoints/${avg_ckpt}
 
 if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
     # prepare data
@@ -28,7 +26,7 @@ fi
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
     # train model, all `ckpt` under `exp` dir
-    CUDA_VISIBLE_DEVICES=${gpus} ./local/train.sh ${conf_path} ${ckpt} ${ips}
+    CUDA_VISIBLE_DEVICES=${gpus} ./local/debug.sh ${conf_path} ${ckpt} ${ips}
 fi
 
 if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
@@ -36,9 +34,3 @@ if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
     avg.sh best exp/${ckpt}/checkpoints ${avg_num}
 fi
 
-
-if [ ${stage} -le 3 ] && [ ${stop_stage} -ge 3 ]; then
-    # attetion resocre decoder
-    echo ${ckpt_prefix}
-    ./local/test.sh ${conf_path} ${decode_conf_path} ${dict_path} ${ckpt_prefix} || exit -1
-fi

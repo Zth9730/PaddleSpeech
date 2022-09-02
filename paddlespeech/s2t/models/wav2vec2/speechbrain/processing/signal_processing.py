@@ -12,7 +12,6 @@ import math
 from packaging import version
 import numpy as np
 
-
 def blackman_window(window_length, periodic=True):
     if window_length == 0:
         return []
@@ -21,6 +20,9 @@ def blackman_window(window_length, periodic=True):
     if periodic:
         window_length += 1
     
+
+
+
     window = paddle.arange(window_length) * (np.pi / (window_length - 1))
     window = 0.08 * paddle.cos(window * 4) - 0.5 * paddle.cos(window * 2) + 0.42
     return window[:-1] if periodic else window
@@ -195,7 +197,6 @@ def convolve1d(
 
     # Return time dimension to the second dimension.
     return convolved.transpose([0, 2, 1])
-
 
 def notch_filter(notch_freq, filter_width=101, notch_width=0.05):
     """Returns a notch filter constructed from a high-pass and low-pass filter.

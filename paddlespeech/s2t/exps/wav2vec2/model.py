@@ -31,6 +31,7 @@ from paddlespeech.s2t.io.dataloader import BatchDataLoader
 from paddlespeech.s2t.io.dataloader import StreamDataLoader
 from paddlespeech.s2t.io.dataloader import DataLoaderFactory
 from paddlespeech.s2t.models.wav2vec2.wav2vec2_ASR import Wav2vec2ASR
+from paddlespeech.s2t.utils import error_rate
 
 
 from paddlespeech.s2t.training.optimizer import OptimizerFactory
@@ -44,7 +45,7 @@ from paddlespeech.s2t.utils import layer_tools
 from paddlespeech.s2t.utils.log import Log
 
 from paddlespeech.s2t.models.wav2vec2.speechbrain.processing.speech_augmentation import TimeDomainSpecAugment
-
+import pdb
 
 
 logger = Log(__name__).getlog()
@@ -255,7 +256,7 @@ class Wav2Vec2ASRTrainer(Trainer):
         if self.parallel:
             model = paddle.DataParallel(model, find_unused_parameters=True)
 
-        logger.info(f"{model}")
+        # logger.info(f"{model}")
         layer_tools.print_params(model, logger.info)
         self.model = model
         logger.info("Setup model!")
@@ -314,18 +315,19 @@ class Wav2Vec2ASRTrainer(Trainer):
 class Wav2Vec2ASRTester(Wav2Vec2ASRTrainer):
     def __init__(self, config, args):
         super().__init__(config, args)
-        self._text_featurizer = TextFeaturizer(
+        print(config)
+        self.text_featurizer = TextFeaturizer(
             unit_type=config.unit_type, vocab=config.vocab_filepath)
-        self.vocab_list = self._text_featurizer.vocab_list
+        self.vocab_list = self.text_featurizer.vocab_list
 
-    def ordid2token(self, texts, texts_len):
+    def id2token(self, texts, texts_len):
         """ ord() id to chr() chr """
         trans = []
         for text, n in zip(texts, texts_len):
             n = n.numpy().item()
             ids = text[:n]
             trans.append(
-                self._text_featurizer.defeaturize(ids.numpy().tolist()))
+                self.text_featurizer.defeaturize(ids.numpy().tolist()))
         return trans
 
     def compute_metrics(self,
@@ -340,65 +342,77 @@ class Wav2Vec2ASRTester(Wav2Vec2ASRTrainer):
         errors_func = error_rate.char_errors if decode_cfg.error_rate_type == 'cer' else error_rate.word_errors
         error_rate_func = error_rate.cer if decode_cfg.error_rate_type == 'cer' else error_rate.wer
 
-        target_transcripts = self.ordid2token(texts, texts_len)
+        start_time = time.time()
+        target_transcripts = self.id2token(texts, texts_len)
+        result_transcripts, result_tokenids = self.model.decode(
+                    audio,
+                    audio_len,
+                    text_feature=self.text_featurizer,
+                    decoding_method=decode_cfg.decoding_method,
+                    beam_size=decode_cfg.beam_size)
+        decode_time = time.time() - start_time
 
-        result_transcripts = self.compute_result_transcripts(audio, audio_len)
-
-        for utt, target, result in zip(utts, target_transcripts,
-                                       result_transcripts):
+        for utt, target, result, rec_tids in zip(
+                utts, target_transcripts, result_transcripts, result_tokenids):
             errors, len_ref = errors_func(target, result)
             errors_sum += errors
             len_refs += len_ref
             num_ins += 1
             if fout:
-                fout.write({"utt": utt, "refs": [target], "hyps": [result]})
+                fout.write({
+                    "utt": utt,
+                    "refs": [target],
+                    "hyps": [result],
+                    "hyps_tokenid": [rec_tids],
+                })
             logger.info(f"Utt: {utt}")
             logger.info(f"Ref: {target}")
             logger.info(f"Hyp: {result}")
-            logger.info(
-                "Current error rate [%s] = %f" %
-                (decode_cfg.error_rate_type, error_rate_func(target, result)))
+            logger.info("One example error rate [%s] = %f" % (
+                decode_cfg.error_rate_type, error_rate_func(target, result)))
 
         return dict(
             errors_sum=errors_sum,
             len_refs=len_refs,
-            num_ins=num_ins,
+            num_ins=num_ins,  # num examples
             error_rate=errors_sum / len_refs,
-            error_rate_type=decode_cfg.error_rate_type)
-
-    def compute_result_transcripts(self, audio, audio_len):
-        result_transcripts = self.model.decode(audio, audio_len)
-        return result_transcripts
+            error_rate_type=decode_cfg.error_rate_type,
+            num_frames=audio_len.sum().numpy().item(),
+            decode_time=decode_time)
 
     @mp_tools.rank_zero_only
     @paddle.no_grad()
     def test(self):
         logger.info(f"Test Total Examples: {len(self.test_loader.dataset)}")
         self.model.eval()
+
         error_rate_type = None
         errors_sum, len_refs, num_ins = 0.0, 0, 0
-
+        num_frames = 0.0
+        num_time = 0.0
         # Initialized the decoder in model
         decode_cfg = self.config.decode
         vocab_list = self.vocab_list
         decode_batch_size = decode_cfg.decode_batch_size
-        self.model.decoder.init_decoder(
-            decode_batch_size, vocab_list, decode_cfg.decoding_method,
-            decode_cfg.lang_model_path, decode_cfg.alpha, decode_cfg.beta,
-            decode_cfg.beam_size, decode_cfg.cutoff_prob,
-            decode_cfg.cutoff_top_n, decode_cfg.num_proc_bsearch)
+        # self.model.decoder.init_decoder(
+        #     decode_batch_size, vocab_list, decode_cfg.decoding_method,
+        #     decode_cfg.lang_model_path, decode_cfg.alpha, decode_cfg.beta,
+        #     decode_cfg.beam_size, decode_cfg.cutoff_prob,
+        #     decode_cfg.cutoff_top_n, decode_cfg.num_proc_bsearch)
 
         with jsonlines.open(self.args.result_file, 'w') as fout:
             for i, batch in enumerate(self.test_loader):
-                utts, audio, audio_len, texts, texts_len = batch
-                metrics = self.compute_metrics(utts, audio, audio_len, texts,
-                                               texts_len, fout)
+                metrics = self.compute_metrics(*batch, fout=fout)
+                num_frames += metrics['num_frames']
+                num_time += metrics["decode_time"]
                 errors_sum += metrics['errors_sum']
                 len_refs += metrics['len_refs']
                 num_ins += metrics['num_ins']
                 error_rate_type = metrics['error_rate_type']
-                logger.info("Error rate [%s] (%d/?) = %f" %
-                            (error_rate_type, num_ins, errors_sum / len_refs))
+                rtf = num_time / (num_frames)
+                logger.info(
+                    "RTF: %f, Error rate [%s] (%d/?) = %f" %
+                    (rtf, error_rate_type, num_ins, errors_sum / len_refs))
 
         # logging
         msg = "Test: "
@@ -407,7 +421,32 @@ class Wav2Vec2ASRTester(Wav2Vec2ASRTrainer):
         msg += "Final error rate [%s] (%d/%d) = %f" % (
             error_rate_type, num_ins, num_ins, errors_sum / len_refs)
         logger.info(msg)
-        self.model.decoder.del_decoder()
+
+        err_meta_path = os.path.splitext(self.args.result_file)[0] + '.err'
+        err_type_str = "{}".format(error_rate_type)
+        with open(err_meta_path, 'w') as f:
+            data = json.dumps({
+                "epoch":
+                self.epoch,
+                "step":
+                self.iteration,
+                "rtf":
+                rtf,
+                error_rate_type:
+                errors_sum / len_refs,
+                "dataset_hour": (num_frames) / 1000.0 / 3600.0,
+                "process_hour":
+                num_time / 1000.0 / 3600.0,
+                "num_examples":
+                num_ins,
+                "err_sum":
+                errors_sum,
+                "ref_len":
+                len_refs,
+                "decode_method":
+                self.config.decode.decoding_method,
+            })
+            f.write(data + '\n')
 
     @paddle.no_grad()
     def export(self):

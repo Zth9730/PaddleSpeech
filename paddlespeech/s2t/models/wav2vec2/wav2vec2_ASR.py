@@ -11,7 +11,10 @@ import paddle.nn as nn
 import paddle.nn.functional as F
 from paddlespeech.s2t.models.wav2vec2.modeling_wav2vec2 import Wav2Vec2ConfigPure
 from paddlespeech.s2t.models.wav2vec2.modeling_wav2vec2 import Wav2Vec2Model
+from paddlespeech.s2t.modules.mask import make_pad_mask
+from paddlespeech.s2t.utils.utility import log_add
 
+from collections import defaultdict
 
 from paddlespeech.s2t.models.wav2vec2.speechbrain.lobes.models.VanillaNN import VanillaNN
 from paddlespeech.s2t.modules.ctc import CTCDecoderBase as CTC
@@ -61,19 +64,41 @@ class Wav2vec2ASR(nn.Layer):
         ctc_loss = self.ctc(x, x_lens, target, target_lens)
         return ctc_loss
 
-    def decode(self, wav, wavs_lens_rate):
-        if self.normalize_wav:
-            wav = F.layer_norm(wav, wav.shape[1:])
-        # Extract wav2vec output
-        out = self.wav2vec2(wav)[0]
-        np.save("data/out.npy", out.numpy())
-        # We normalize the output if required
-        if self.output_norm:
-            out = F.layer_norm(out, out.shape[1:])
-        feats = out
 
-        x = self.enc(feats)
-        x_lens = (wavs_lens_rate * x.shape[1]).round().astype(paddle.int64)
+    @paddle.no_grad()
+    def decode(self, 
+               feats: paddle.Tensor,
+               feats_lengths: paddle.Tensor,
+               text_feature: Dict[str, int],
+               decoding_method: str,
+               beam_size: int):
+        batch_size = feats.shape[0]
+        if decoding_method is 'ctc_prefix_beam_search' and batch_size > 1:
+            logger.error(
+                f'decoding mode {decoding_method} must be running with batch_size == 1'
+            )
+            logger.error(f"current batch_size is {batch_size}")
+            sys.exit(1)
+        
+        if decoding_method == 'ctc_greedy_search':
+            hyps = self.ctc_greedy_search(feats, feats_lengths)
+            res = [text_feature.defeaturize(hyp) for hyp in hyps]
+            res_tokenids = [hyp for hyp in hyps]
+        # ctc_prefix_beam_search and attention_rescoring only return one
+        # result in List[int], change it to List[List[int]] for compatible
+        # with other batch decoding mode
+        elif decoding_method == 'ctc_prefix_beam_search':
+            assert feats.shape[0] == 1
+            hyp = self.ctc_prefix_beam_search(
+                feats,
+                feats_lengths,
+                beam_size)
+            res = [text_feature.defeaturize(hyp)]
+            res_tokenids = [hyp]
+        else:
+            raise ValueError(f"wav2vec2 not support decoding method: {decoding_method}")
+
+        return res, res_tokenids
 
     @classmethod
     def from_config(cls, config):
@@ -89,6 +114,8 @@ class Wav2vec2ASR(nn.Layer):
         Returns:
             List[List[int]]: best path result
         """
+        batch_size = wav.shape[0]
+        wav = wav[:,:,0]
         if self.normalize_wav:
             wav = F.layer_norm(wav, wav.shape[1:])
         # Extract wav2vec output
@@ -97,24 +124,20 @@ class Wav2vec2ASR(nn.Layer):
         if self.output_norm:
             out = F.layer_norm(out, out.shape[1:])
         feats = out
-
         x = self.enc(feats)
-        x_lens = (wavs_lens_rate * x.shape[1]).round().astype(paddle.int64)
-
-
+        x_lens = x.shape[1]
         ctc_probs = self.ctc.log_softmax(x)  # (B, maxlen, vocab_size)
-
         topk_prob, topk_index = ctc_probs.topk(1, axis=2)  # (B, maxlen, 1)
-        topk_index = topk_index.view(batch_size, maxlen)  # (B, maxlen)
-        pad_mask = make_pad_mask(x_lens)  # (B, maxlen)
-        topk_index = topk_index.masked_fill_(pad_mask, self.eos)  # (B, maxlen)
+        topk_index = topk_index.view(batch_size, x_lens)  # (B, maxlen)
+        # pad_mask = make_pad_mask(x_lens)  # (B, maxlen)
+        # topk_index = topk_index.masked_fill_(pad_mask, self.eos)  # (B, maxlen)
 
         hyps = [hyp.tolist() for hyp in topk_index]
         hyps = [remove_duplicates_and_blank(hyp) for hyp in hyps]
         return hyps
 
     def _ctc_prefix_beam_search(
-           self, wav, wavs_lens_rate) -> Tuple[List[Tuple[int, float]], paddle.Tensor]:
+           self, wav, wavs_lens_rate, beam_size, blank_id: int=0, ) -> Tuple[List[Tuple[int, float]], paddle.Tensor]:
         """ CTC prefix beam search inner implementation
         Args:
             speech (paddle.Tensor): (batch, max_len, feat_dim)
@@ -132,6 +155,8 @@ class Wav2vec2ASR(nn.Layer):
             paddle.Tensor: encoder output, (1, max_len, encoder_dim),
                 it will be used for rescoring in attention rescoring mode
         """
+        wav = wav[:,:,0]
+
         if self.normalize_wav:
             wav = F.layer_norm(wav, wav.shape[1:])
         # Extract wav2vec output
@@ -142,7 +167,7 @@ class Wav2vec2ASR(nn.Layer):
         feats = out
 
         x = self.enc(feats)
-        x_lens = (wavs_lens_rate * x.shape[1]).round().astype(paddle.int64)
+        maxlen = x.shape[1]
         ctc_probs = self.ctc.log_softmax(x)  # (1, maxlen, vocab_size)
         ctc_probs = ctc_probs.squeeze(0)
 
@@ -189,16 +214,9 @@ class Wav2vec2ASR(nn.Layer):
             cur_hyps = next_hyps[:beam_size]
 
         hyps = [(y[0], log_add([y[1][0], y[1][1]])) for y in cur_hyps]
-        return hyps, encoder_out
+        return hyps
 
-    def ctc_prefix_beam_search(
-            self,
-            speech: paddle.Tensor,
-            speech_lengths: paddle.Tensor,
-            beam_size: int,
-            decoding_chunk_size: int=-1,
-            num_decoding_left_chunks: int=-1,
-            simulate_streaming: bool=False, ) -> List[int]:
+    def ctc_prefix_beam_search(self, wav, wavs_lens_rate, beam_size) -> List[int]:
         """ Apply CTC prefix beam search
         Args:
             speech (paddle.Tensor): (batch, max_len, feat_dim)
@@ -214,9 +232,8 @@ class Wav2vec2ASR(nn.Layer):
         Returns:
             List[int]: CTC prefix beam search nbest results
         """
-        hyps, _ = self._ctc_prefix_beam_search(
-            speech, speech_lengths, beam_size, decoding_chunk_size,
-            num_decoding_left_chunks, simulate_streaming)
+        hyps = self._ctc_prefix_beam_search(
+            wav, wavs_lens_rate, beam_size)
         return hyps[0][0]
 
     # @jit.to_static
@@ -229,79 +246,6 @@ class Wav2vec2ASR(nn.Layer):
             paddle.Tensor: activation before ctc
         """
         return self.ctc.log_softmax(xs)
-
-    @paddle.no_grad()
-    def decode(self,
-               feats: paddle.Tensor,
-               feats_lengths: paddle.Tensor,
-               text_feature: Dict[str, int],
-               decoding_method: str,
-               beam_size: int,
-               ctc_weight: float=0.0,
-               decoding_chunk_size: int=-1,
-               num_decoding_left_chunks: int=-1,
-               simulate_streaming: bool=False):
-        """u2 decoding.
-
-        Args:
-            feats (Tensor): audio features, (B, T, D)
-            feats_lengths (Tensor): (B)
-            text_feature (TextFeaturizer): text feature object.
-            decoding_method (str): decoding mode, e.g.
-                    'attention', 'ctc_greedy_search',
-                    'ctc_prefix_beam_search', 'attention_rescoring'
-            beam_size (int): beam size for search
-            ctc_weight (float, optional): ctc weight for attention rescoring decode mode. Defaults to 0.0.
-            decoding_chunk_size (int, optional): decoding chunk size. Defaults to -1.
-                    <0: for decoding, use full chunk.
-                    >0: for decoding, use fixed chunk size as set.
-                    0: used for training, it's prohibited here.
-            num_decoding_left_chunks (int, optional):
-                    number of left chunks for decoding. Defaults to -1.
-            simulate_streaming (bool, optional): simulate streaming inference. Defaults to False.
-
-        Raises:
-            ValueError: when not support decoding_method.
-
-        Returns:
-            List[List[int]]: transcripts.
-        """
-        batch_size = feats.shape[0]
-        if decoding_method in ['ctc_prefix_beam_search',
-                               'attention_rescoring'] and batch_size > 1:
-            logger.error(
-                f'decoding mode {decoding_method} must be running with batch_size == 1'
-            )
-            logger.error(f"current batch_size is {batch_size}")
-            sys.exit(1)
-        elif decoding_method == 'ctc_greedy_search':
-            hyps = self.ctc_greedy_search(
-                feats,
-                feats_lengths,
-                decoding_chunk_size=decoding_chunk_size,
-                num_decoding_left_chunks=num_decoding_left_chunks,
-                simulate_streaming=simulate_streaming)
-        # ctc_prefix_beam_search and attention_rescoring only return one
-        # result in List[int], change it to List[List[int]] for compatible
-        # with other batch decoding mode
-        elif decoding_method == 'ctc_prefix_beam_search':
-            assert feats.shape[0] == 1
-            hyp = self.ctc_prefix_beam_search(
-                feats,
-                feats_lengths,
-                beam_size,
-                decoding_chunk_size=decoding_chunk_size,
-                num_decoding_left_chunks=num_decoding_left_chunks,
-                simulate_streaming=simulate_streaming)
-            hyps = [hyp]
-      
-        else:
-            raise ValueError(f"Not support decoding method: {decoding_method}")
-
-        res = [text_feature.defeaturize(hyp) for hyp in hyps]
-        res_tokenids = [hyp for hyp in hyps]
-        return res, res_tokenids
-
 
 
     def _get_data(self):
@@ -317,10 +261,9 @@ class Wav2vec2ASR(nn.Layer):
 
 
 if __name__ == "__main__":
-    wav2vec2_asr = Wav2vec2ASR(configs={})
-    wav2vec2_asr.train_batch()
-    exit(1)
-
+    # wav2vec2_asr = Wav2vec2ASR(config={})
+    # wav2vec2_asr.train_batch()
+    print('000')
     freeze = True
     config = Wav2Vec2ConfigPure()
     model = Wav2Vec2Model(config)

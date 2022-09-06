@@ -4,20 +4,20 @@ set -e
 . ./path.sh || exit 1;
 . ./cmd.sh || exit 1;
 
-gpus=3
-stage=3
-stop_stage=50
+gpus=1
+stage=1
+stop_stage=1
 conf_path=conf/wav2vec2ASR.yaml
 ips=            #xx.xx.xx.xx,xx.xx.xx.xx
 decode_conf_path=conf/tuning/decode.yaml
 avg_num=1
 audio_file=data/demo_002_en.wav
 dict_path=data/lang_char/vocab.txt
-
+dp_log='dp_log'
 . ${MAIN_ROOT}/utils/parse_options.sh || exit 1;
 
 avg_ckpt=avg_${avg_num}
-ckpt=$(basename ${conf_path} | awk -F'.' '{print $1}')
+ckpt=test
 echo "checkpoint name ${ckpt}"
 ckpt_prefix=exp/${ckpt}/checkpoints/${avg_ckpt}
 
@@ -28,7 +28,7 @@ fi
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
     # train model, all `ckpt` under `exp` dir
-    CUDA_VISIBLE_DEVICES=${gpus} ./local/train.sh ${conf_path} ${ckpt} ${ips}
+    CUDA_VISIBLE_DEVICES=${gpus} ./local/train.sh ${conf_path} ${ckpt} ${dp_log} ${ips} 
 fi
 
 if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then

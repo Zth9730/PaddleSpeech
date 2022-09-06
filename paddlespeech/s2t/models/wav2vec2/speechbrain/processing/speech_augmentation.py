@@ -736,13 +736,7 @@ class TimeDomainSpecAugment(nn.Layer):
         """
         # Augmentation
         with paddle.no_grad():
-            print(waveforms[0])
             waveforms = self.speed_perturb(waveforms)
-            print(waveforms[0])
-
             waveforms = self.drop_freq(waveforms)
-            print(waveforms[0])
-
             waveforms = self.drop_chunk(waveforms, lengths)
-            print(waveforms[0])
         return waveforms

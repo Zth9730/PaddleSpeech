@@ -263,7 +263,6 @@ class Wav2vec2ASR(nn.Layer):
 if __name__ == "__main__":
     # wav2vec2_asr = Wav2vec2ASR(config={})
     # wav2vec2_asr.train_batch()
-    print('000')
     freeze = True
     config = Wav2Vec2ConfigPure()
     model = Wav2Vec2Model(config)

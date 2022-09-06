@@ -24,8 +24,6 @@ import jsonlines
 import numpy as np
 import paddle
 from paddle import distributed as dist
-
-
 from paddlespeech.s2t.frontend.featurizer import TextFeaturizer
 from paddlespeech.s2t.io.dataloader import BatchDataLoader
 from paddlespeech.s2t.io.dataloader import StreamDataLoader
@@ -63,9 +61,10 @@ class Wav2Vec2ASRTrainer(Trainer):
         wavs_lens_rate = wavs_lens / wav.shape[1] 
         target_lens_rate = target_lens / target.shape[1]
         wav = wav[:,:,0]
-        wav = self.speech_augmentation(wav, wavs_lens_rate)
-        loss = self.model(wav, wavs_lens_rate, target, target_lens_rate)
 
+        # wav = self.speech_augmentation(wav, wavs_lens_rate)
+        loss = self.model(wav, wavs_lens_rate, target, target_lens_rate)
+        pdb.set_trace()
         # loss div by `batch_size * accum_grad`
         loss /= train_conf.accum_grad
         losses_np = {'loss': float(loss) * train_conf.accum_grad}
@@ -86,12 +85,18 @@ class Wav2Vec2ASRTrainer(Trainer):
             loss.backward()
             layer_tools.print_grads(self.model, print_func=None)
 
-        # optimizer step
+        # optimizer step old
         if (batch_index + 1) % train_conf.accum_grad == 0:
             self.optimizer.step()
             self.optimizer.clear_grad()
             self.lr_scheduler.step()
             self.iteration += 1
+
+        # optimizer step new
+        # if (batch_index + 1) % train_conf.accum_grad == 0:
+        #     self.optimizer.step()
+        #     self.optimizer.clear_grad()
+        #     self.iteration += 1
 
         iteration_time = time.time() - start
 
@@ -252,23 +257,22 @@ class Wav2Vec2ASRTrainer(Trainer):
 
         model = Wav2vec2ASR.from_config(model_conf)
 
-
         if self.parallel:
-            model = paddle.DataParallel(model, find_unused_parameters=True)
+            model = paddle.DataParallel(model, find_unused_parameters=False) 
 
         # logger.info(f"{model}")
         layer_tools.print_params(model, logger.info)
         self.model = model
         logger.info("Setup model!")
 
-        self.speech_augmentation = TimeDomainSpecAugment(sample_rate=16000, speeds=[95, 100, 105])
+        # self.speech_augmentation = TimeDomainSpecAugment(sample_rate=16000, speeds=[95, 100, 105])
 
         if not self.train:
             return
 
         train_config = config
-        optim_type = train_config.optim
-        optim_conf = train_config.optim_conf
+        optim_type = train_config.model_optim
+        optim_conf = train_config.model_optim_conf
         scheduler_type = train_config.scheduler
         scheduler_conf = train_config.scheduler_conf
 
@@ -277,7 +281,7 @@ class Wav2Vec2ASRTrainer(Trainer):
             "verbose": False,
             "warmup_steps": scheduler_conf.warmup_steps,
             "gamma": scheduler_conf.lr_decay,
-            "d_model": model_conf.dnn_neurons,
+            # "d_model": model_conf.dnn_neurons,
         }
         lr_scheduler = LRSchedulerFactory.from_args(scheduler_type,
                                                     scheduler_args)
@@ -287,8 +291,8 @@ class Wav2Vec2ASRTrainer(Trainer):
                 parameters,
                 lr_scheduler=None, ):
             train_config = config
-            optim_type = train_config.optim
-            optim_conf = train_config.optim_conf
+            optim_type = train_config.model_optim
+            optim_conf = train_config.model_optim_conf
             scheduler_type = train_config.scheduler
             scheduler_conf = train_config.scheduler_conf
             return {
@@ -303,7 +307,9 @@ class Wav2Vec2ASRTrainer(Trainer):
                 "beat2": 0.98 if optim_type == 'noam' else None,
             }
 
+        # optimzer_args = optimizer_args(config, model.parameters(), lr_scheduler)
         optimzer_args = optimizer_args(config, model.parameters(), lr_scheduler)
+
         optimizer = OptimizerFactory.from_args(optim_type, optimzer_args)
 
         self.optimizer = optimizer

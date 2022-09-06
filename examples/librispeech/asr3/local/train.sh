@@ -10,8 +10,8 @@ echo "using $ngpu gpus..."
 
 config_path=$1
 ckpt_name=$2
-ips=$3
-
+ips=$4
+dp_log=$3
 if [ ! $ips ];then
   ips_config=
 else
@@ -36,7 +36,7 @@ python3 -u ${BIN_DIR}/train.py \
 --output exp/${ckpt_name} \
 --seed ${seed} 
 else
-python3 -m paddle.distributed.launch --gpus=${CUDA_VISIBLE_DEVICES} --log_dir=test ${ips_config} ${BIN_DIR}/train.py \
+python3 -m paddle.distributed.launch --gpus=${CUDA_VISIBLE_DEVICES} --log_dir=${dp_log} ${ips_config} ${BIN_DIR}/train.py \
 --ngpu ${ngpu} \
 --config ${config_path} \
 --output exp/${ckpt_name} \

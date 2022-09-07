@@ -1,0 +1,366 @@
+I0905 08:05:04.419435 37491 gen_comm_id_helper.cc:205] Server listening on: 127.0.0.1:47666 successful.
+I0905 08:05:07.244488 37491 nccl_context.cc:83] init nccl context nranks: 8 local rank: 2 gpu id: 2 ring id: 0
+W0905 08:05:09.780191 37491 gpu_resources.cc:61] Please NOTE: device: 2, GPU Compute Capability: 7.0, Driver API Version: 10.2, Runtime API Version: 10.2
+W0905 08:05:09.786166 37491 gpu_resources.cc:91] device: 2, cuDNN Version: 7.6.
+----------- train.py Arguments -----------
+benchmark_batch_size: 0
+benchmark_max_step: 0
+checkpoint_path: None
+conf: None
+config: conf/conformer.yaml
+decode_cfg: None
+dump_config: None
+ngpu: 8
+nxpu: 0
+opts: None
+output: exp/conformer
+profiler_options: 
+seed: 0
+-----------------------------------------------------------
+accum_grad: 32
+batch_size: 32
+checkpoint:
+  kbest_n: 50
+  latest_n: 5
+cmvn_file: data/mean_std.json
+cmvn_file_type: json
+decoder: transformer
+decoder_conf:
+  attention_heads: 8
+  dropout_rate: 0.1
+  linear_units: 2048
+  num_blocks: 6
+  positional_dropout_rate: 0.1
+  self_attention_dropout_rate: 0.0
+  src_attention_dropout_rate: 0.0
+dev_manifest: data/dev/data.list
+dist_sampler: True
+dither: 0.1
+encoder: conformer
+encoder_conf:
+  activation_type: swish
+  attention_dropout_rate: 0.0
+  attention_heads: 8
+  cnn_module_kernel: 15
+  cnn_module_norm: layer_norm
+  dropout_rate: 0.1
+  input_layer: conv2d
+  linear_units: 2048
+  normalize_before: True
+  num_blocks: 12
+  output_size: 512
+  pos_enc_layer_type: rel_pos
+  positional_dropout_rate: 0.1
+  selfattention_layer_type: rel_selfattn
+  use_cnn_module: True
+feat_dim: 80
+global_grad_clip: 5.0
+log_interval: 100
+maxlen_in: 1200
+maxlen_out: 150
+minlen_in: 10
+minlen_out: 0
+model_conf:
+  ctc_weight: 0.3
+  init_type: kaiming_uniform
+  length_normalized_loss: False
+  lsm_weight: 0.1
+n_epoch: 32
+num_encs: 1
+num_workers: 8
+optim: adam
+optim_conf:
+  lr: 0.001
+  weight_decay: 1e-06
+prefetch_factor: 10
+preprocess_config: conf/preprocess.yaml
+resample_rate: 16000
+scheduler: warmuplr
+scheduler_conf:
+  lr_decay: 1.0
+  warmup_steps: 5000
+shuffle_size: 1500
+sort_size: 1000
+sortagrad: 0
+spm_model_prefix: 
+stride_ms: 10.0
+test_manifest: data/test_meeting/data.list
+train_manifest: data/train_l/data.list
+unit_type: char
+use_stream_data: True
+vocab_filepath: data/lang_char/vocab.txt
+window_ms: 25.0
+2022-09-05 08:05:11.676 | INFO     | paddlespeech.s2t.utils.utility:all_version:45 - Deps Module Version:[('python', '3.7.13 (default, Mar 29 2022, 02:18:16) \n[GCC 7.5.0]'),
+ ('paddle', '2.3.1'),
+ ('paddle_commit', '3cc6ae69ed93388b2648bcc819d593130dede752'),
+ ('soundfile', '0.10.3')]
+0
+Traceback (most recent call last):
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/bin/train.py", line 56, in <module>
+2022-09-05 08:05:11.677 | INFO     | paddlespeech.s2t.training.trainer:__init__:114 - Rank: 2/8
+    pr.runcall(main, config, args)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/tools/venv/lib/python3.7/cProfile.py", line 121, in runcall
+    return func(*args, **kw)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/bin/train.py", line 34, in main
+    main_sp(config, args)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/bin/train.py", line 29, in main_sp
+    exp.setup()
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/training/trainer.py", line 167, in setup
+    self.setup_dataloader()
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/model.py", line 228, in setup_dataloader
+    self.train_loader = DataLoaderFactory.get_dataloader('train', config, self.args)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/io/dataloader.py", line 383, in get_dataloader
+    vocab_filepath=config.vocab_filepath,
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/io/dataloader.py", line 117, in __init__
+    text_featurizer = TextFeaturizer(unit_type, vocab_filepath)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/audio/text/text_featurizer.py", line 54, in __init__
+    vocab, maskctc)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/audio/text/text_featurizer.py", line 213, in _load_vocabulary_from_file
+    vocab_list = load_dict(vocab, maskctc)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/audio/text/utility.py", line 51, in load_dict
+    with open(dict_path, "r") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'data/lang_char/vocab.txt'
+I0905 08:06:06.844743 38405 gen_comm_id_helper.cc:205] Server listening on: 127.0.0.1:32790 successful.
+I0905 08:06:09.802050 38405 nccl_context.cc:83] init nccl context nranks: 3 local rank: 2 gpu id: 2 ring id: 0
+W0905 08:06:10.414389 38405 gpu_resources.cc:61] Please NOTE: device: 2, GPU Compute Capability: 7.0, Driver API Version: 10.2, Runtime API Version: 10.2
+W0905 08:06:10.418234 38405 gpu_resources.cc:91] device: 2, cuDNN Version: 7.6.
+----------- train.py Arguments -----------
+benchmark_batch_size: 0
+benchmark_max_step: 0
+checkpoint_path: None
+conf: None
+config: conf/conformer.yaml
+decode_cfg: None
+dump_config: None
+ngpu: 3
+nxpu: 0
+opts: None
+output: exp/conformer
+profiler_options: 
+seed: 0
+-----------------------------------------------------------
+accum_grad: 32
+batch_size: 32
+checkpoint:
+  kbest_n: 50
+  latest_n: 5
+cmvn_file: data/mean_std.json
+cmvn_file_type: json
+decoder: transformer
+decoder_conf:
+  attention_heads: 8
+  dropout_rate: 0.1
+  linear_units: 2048
+  num_blocks: 6
+  positional_dropout_rate: 0.1
+  self_attention_dropout_rate: 0.0
+  src_attention_dropout_rate: 0.0
+dev_manifest: data/dev/data.list
+dist_sampler: True
+dither: 0.1
+encoder: conformer
+encoder_conf:
+  activation_type: swish
+  attention_dropout_rate: 0.0
+  attention_heads: 8
+  cnn_module_kernel: 15
+  cnn_module_norm: layer_norm
+  dropout_rate: 0.1
+  input_layer: conv2d
+  linear_units: 2048
+  normalize_before: True
+  num_blocks: 12
+  output_size: 512
+  pos_enc_layer_type: rel_pos
+  positional_dropout_rate: 0.1
+  selfattention_layer_type: rel_selfattn
+  use_cnn_module: True
+feat_dim: 80
+global_grad_clip: 5.0
+log_interval: 100
+maxlen_in: 1200
+maxlen_out: 150
+minlen_in: 10
+minlen_out: 0
+model_conf:
+  ctc_weight: 0.3
+  init_type: kaiming_uniform
+  length_normalized_loss: False
+  lsm_weight: 0.1
+n_epoch: 32
+num_encs: 1
+num_workers: 8
+optim: adam
+optim_conf:
+  lr: 0.001
+  weight_decay: 1e-06
+prefetch_factor: 10
+preprocess_config: conf/preprocess.yaml
+resample_rate: 16000
+scheduler: warmuplr
+scheduler_conf:
+  lr_decay: 1.0
+  warmup_steps: 5000
+shuffle_size: 1500
+sort_size: 1000
+sortagrad: 0
+spm_model_prefix: 
+stride_ms: 10.0
+test_manifest: data/test_meeting/data.list
+train_manifest: data/train_l/data.list
+unit_type: char
+use_stream_data: True
+vocab_filepath: data/lang_char/vocab.txt
+window_ms: 25.0
+2022-09-05 08:06:12.181 | INFO     | paddlespeech.s2t.utils.utility:all_version:45 - Deps Module Version:[('python', '3.7.13 (default, Mar 29 2022, 02:18:16) \n[GCC 7.5.0]'),
+ ('paddle', '2.3.1'),
+ ('paddle_commit', '3cc6ae69ed93388b2648bcc819d593130dede752'),
+ ('soundfile', '0.10.3')]
+0
+2022-09-05 08:06:12.182 | INFO     | paddlespeech.s2t.training.trainer:__init__:114 - Rank: 2/3
+Traceback (most recent call last):
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/bin/train.py", line 56, in <module>
+    pr.runcall(main, config, args)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/tools/venv/lib/python3.7/cProfile.py", line 121, in runcall
+    return func(*args, **kw)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/bin/train.py", line 34, in main
+    main_sp(config, args)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/bin/train.py", line 29, in main_sp
+    exp.setup()
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/training/trainer.py", line 167, in setup
+    self.setup_dataloader()
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/model.py", line 228, in setup_dataloader
+    self.train_loader = DataLoaderFactory.get_dataloader('train', config, self.args)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/io/dataloader.py", line 383, in get_dataloader
+    vocab_filepath=config.vocab_filepath,
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/io/dataloader.py", line 117, in __init__
+    text_featurizer = TextFeaturizer(unit_type, vocab_filepath)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/audio/text/text_featurizer.py", line 54, in __init__
+    vocab, maskctc)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/audio/text/text_featurizer.py", line 213, in _load_vocabulary_from_file
+    vocab_list = load_dict(vocab, maskctc)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/audio/text/utility.py", line 51, in load_dict
+    with open(dict_path, "r") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'data/lang_char/vocab.txt'
+I0905 08:06:48.452239 38933 gen_comm_id_helper.cc:205] Server listening on: 127.0.0.1:48095 successful.
+I0905 08:06:51.415189 38933 nccl_context.cc:83] init nccl context nranks: 3 local rank: 2 gpu id: 2 ring id: 0
+W0905 08:06:51.971957 38933 gpu_resources.cc:61] Please NOTE: device: 2, GPU Compute Capability: 7.0, Driver API Version: 10.2, Runtime API Version: 10.2
+W0905 08:06:51.975968 38933 gpu_resources.cc:91] device: 2, cuDNN Version: 7.6.
+----------- train.py Arguments -----------
+benchmark_batch_size: 0
+benchmark_max_step: 0
+checkpoint_path: None
+conf: None
+config: conf/conformer.yaml
+decode_cfg: None
+dump_config: None
+ngpu: 3
+nxpu: 0
+opts: None
+output: exp/conformer
+profiler_options: 
+seed: 0
+-----------------------------------------------------------
+accum_grad: 32
+batch_size: 32
+checkpoint:
+  kbest_n: 50
+  latest_n: 5
+cmvn_file: data/mean_std.json
+cmvn_file_type: json
+decoder: transformer
+decoder_conf:
+  attention_heads: 8
+  dropout_rate: 0.1
+  linear_units: 2048
+  num_blocks: 6
+  positional_dropout_rate: 0.1
+  self_attention_dropout_rate: 0.0
+  src_attention_dropout_rate: 0.0
+dev_manifest: data/dev/data.list
+dist_sampler: True
+dither: 0.1
+encoder: conformer
+encoder_conf:
+  activation_type: swish
+  attention_dropout_rate: 0.0
+  attention_heads: 8
+  cnn_module_kernel: 15
+  cnn_module_norm: layer_norm
+  dropout_rate: 0.1
+  input_layer: conv2d
+  linear_units: 2048
+  normalize_before: True
+  num_blocks: 12
+  output_size: 512
+  pos_enc_layer_type: rel_pos
+  positional_dropout_rate: 0.1
+  selfattention_layer_type: rel_selfattn
+  use_cnn_module: True
+feat_dim: 80
+global_grad_clip: 5.0
+log_interval: 100
+maxlen_in: 1200
+maxlen_out: 150
+minlen_in: 10
+minlen_out: 0
+model_conf:
+  ctc_weight: 0.3
+  init_type: kaiming_uniform
+  length_normalized_loss: False
+  lsm_weight: 0.1
+n_epoch: 32
+num_encs: 1
+num_workers: 8
+optim: adam
+optim_conf:
+  lr: 0.001
+  weight_decay: 1e-06
+prefetch_factor: 10
+preprocess_config: conf/preprocess.yaml
+resample_rate: 16000
+scheduler: warmuplr
+scheduler_conf:
+  lr_decay: 1.0
+  warmup_steps: 5000
+shuffle_size: 1500
+sort_size: 1000
+sortagrad: 0
+spm_model_prefix: 
+stride_ms: 10.0
+test_manifest: data/test_meeting/data.list
+train_manifest: data/train_l/data.list
+unit_type: char
+use_stream_data: True
+vocab_filepath: data/lang_char/vocab.txt
+window_ms: 25.0
+0
+2022-09-05 08:06:53.769 | INFO     | paddlespeech.s2t.utils.utility:all_version:45 - Deps Module Version:[('python', '3.7.13 (default, Mar 29 2022, 02:18:16) \n[GCC 7.5.0]'),
+ ('paddle', '2.3.1'),
+ ('paddle_commit', '3cc6ae69ed93388b2648bcc819d593130dede752'),
+ ('soundfile', '0.10.3')]
+Traceback (most recent call last):
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/bin/train.py", line 56, in <module>
+2022-09-05 08:06:53.770 | INFO     | paddlespeech.s2t.training.trainer:__init__:114 - Rank: 2/3
+    pr.runcall(main, config, args)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/tools/venv/lib/python3.7/cProfile.py", line 121, in runcall
+    return func(*args, **kw)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/bin/train.py", line 34, in main
+    main_sp(config, args)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/bin/train.py", line 29, in main_sp
+    exp.setup()
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/training/trainer.py", line 167, in setup
+    self.setup_dataloader()
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/exps/u2/model.py", line 228, in setup_dataloader
+    self.train_loader = DataLoaderFactory.get_dataloader('train', config, self.args)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/io/dataloader.py", line 383, in get_dataloader
+    vocab_filepath=config.vocab_filepath,
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/io/dataloader.py", line 117, in __init__
+    text_featurizer = TextFeaturizer(unit_type, vocab_filepath)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/audio/text/text_featurizer.py", line 54, in __init__
+    vocab, maskctc)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/audio/text/text_featurizer.py", line 213, in _load_vocabulary_from_file
+    vocab_list = load_dict(vocab, maskctc)
+  File "/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/audio/text/utility.py", line 51, in load_dict
+    with open(dict_path, "r") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'data/lang_char/vocab.txt'

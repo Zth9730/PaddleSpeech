@@ -30,13 +30,12 @@ class Wav2vec2ASR(nn.Layer):
 
         model_dict = paddle.load(config.wav2vec2_params_path)
         wav2vec2.set_state_dict(model_dict)
-        wav2vec2.training = True
         wav2vec2.eval()
         self.normalize_wav = config.normalize_wav
         self.output_norm = config.output_norm
         if config.freeze_wav2vec2:
             for parm in wav2vec2.parameters():
-                parm.requires_grad = False
+                parm.trainable = False
         self.wav2vec2 = wav2vec2
         self.enc = VanillaNN(input_shape=[None,None,wav2vec2_config.hidden_size], activation=nn.LeakyReLU, dnn_blocks=config.dnn_blocks, dnn_neurons=config.dnn_neurons)
         self.ctc = CTC(odim=config.output_dim, enc_n_units=config.dnn_neurons, blank_id=config.blank_id, dropout_rate=config.ctc_dropout_rate, reduction_type="mean")

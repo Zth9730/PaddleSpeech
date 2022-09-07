@@ -1,0 +1,33 @@
+I0905 08:05:04.492625 37520 gen_comm_id_helper.cc:205] Server listening on: 127.0.0.1:57695 successful.
+I0905 08:05:07.244565 37520 nccl_context.cc:83] init nccl context nranks: 8 local rank: 7 gpu id: 7 ring id: 0
+W0905 08:05:09.819187 37520 gpu_resources.cc:61] Please NOTE: device: 7, GPU Compute Capability: 7.0, Driver API Version: 10.2, Runtime API Version: 10.2
+W0905 08:05:09.827280 37520 gpu_resources.cc:91] device: 7, cuDNN Version: 7.6.
+----------- train.py Arguments -----------
+benchmark_batch_size: 0
+benchmark_max_step: 0
+checkpoint_path: None
+conf: None
+config: conf/conformer.yaml
+decode_cfg: None
+dump_config: None
+ngpu: 8
+nxpu: 0
+opts: None
+output: exp/conformer
+profiler_options: 
+seed: 0
+-----------------------------------------------------------
+
+
+--------------------------------------
+C++ Traceback (most recent call last):
+--------------------------------------
+No stack trace in paddle, may be caused by external reasons.
+
+----------------------
+Error Message Summary:
+----------------------
+FatalError: `Termination signal` is detected by the operating system.
+  [TimeInfo: *** Aborted at 1662365112 (unix time) try "date -d @1662365112" if you are using GNU date ***]
+  [SignalInfo: *** SIGTERM (@0x9219) received by PID 37520 (TID 0x7fe3a0c10700) from PID 37401 ***]
+

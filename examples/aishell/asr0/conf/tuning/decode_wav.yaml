@@ -1,0 +1,21 @@
+mean_std_filepath: data/mean_std.json
+unit_type: char
+vocab_filepath: data/lang_char/vocab.txt 
+augmentation_config: conf/augmentation.json
+random_seed: 0
+spm_model_prefix: 
+spectrum_type: linear
+feat_dim: 
+delta_delta: False
+stride_ms: 10.0
+window_ms: 20.0
+n_fft: None
+max_freq: None
+target_sample_rate: 16000
+use_dB_normalization: True
+target_dB: -20
+dither: 1.0
+keep_transcription_text: False
+sortagrad: True
+shuffle_method: batch_shuffle
+num_workers: 2

@@ -6,7 +6,7 @@ from paddlespeech.s2t.models.wav2vec2.speechbrain.processing.signal_processing i
     compute_amplitude,
     convolve1d,
     notch_filter)
-    
+import pdb
 class SpeedPerturb(nn.Layer):
     """Slightly speed up or slow down an audio signal.
     Resample the audio signal at a rate that is similar to the original rate,
@@ -472,7 +472,6 @@ class DropFreq(nn.Layer):
         # Start with delta function
         drop_filter = paddle.zeros([1, filter_length, 1])
         drop_filter[0, pad, 0] = 1
-
         # Subtract each frequency
         for frequency in drop_frequency:
             notch_kernel = notch_filter(

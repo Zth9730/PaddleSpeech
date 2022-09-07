@@ -29,7 +29,7 @@ unit_type: 'char'
 mean_std_filepath: ""
 preprocess_config: conf/preprocess.yaml
 sortagrad: 0 # Feed samples from shortest to longest ; -1: enabled for all epochs, 0: disabled, other: enabled for 'other' epochs 
-batch_size: 3
+batch_size: 6
 maxlen_in: 51200000000  # if input length  > maxlen-in, batchsize is automatically reduced
 maxlen_out: 1500000  # if output length > maxlen-out, batchsize is automatically reduced
 minibatches: 0 # for debug
@@ -52,12 +52,12 @@ return_lens_rate: True
 n_epoch: 2
 accum_grad: 1
 global_grad_clip: 3.0
-optim: adadelta
-optim_conf:
+model_optim: adadelta
+model_optim_conf:
   lr: 0.9
   epsilon: 1.0e-6
   rho: 0.95
-scheduler: warmuplr     
+scheduler: constantlr     
 scheduler_conf:
   warmup_steps: 25000
   lr_decay: 1.0

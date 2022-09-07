@@ -1,0 +1,92 @@
+----------- train.py Arguments -----------
+benchmark_batch_size: None
+benchmark_max_step: None
+checkpoint_path: None
+conf: None
+config: conf/wav2vec2ASR.yaml
+decode_cfg: None
+dump_config: None
+ngpu: 2
+nxpu: 0
+opts: None
+output: exp/test
+profiler_options: None
+seed: 1998
+-----------------------------------------------------------
+accum_grad: 1
+apply_spec_augment: False
+batch_bins: 0
+batch_count: auto
+batch_frames_in: 0
+batch_frames_inout: 0
+batch_frames_out: 0
+batch_size: 5
+blank_id: 0
+checkpoint:
+  kbest_n: 50
+  latest_n: 5
+ctc_dropout_rate: 0.0
+dev_manifest: data/manifest.dev
+dist_sampler: True
+dnn_blocks: 2
+dnn_neurons: 1024
+freeze_wav2vec2: True
+global_grad_clip: 3.0
+log_interval: 1
+maxlen_in: 51200000000
+maxlen_out: 1500000
+mean_std_filepath: 
+minibatches: 0
+model_optim: adadelta
+model_optim_conf:
+  epsilon: 1e-08
+  lr: 0.9
+  rho: 0.95
+n_epoch: 1
+normalize_wav: True
+num_encs: 1
+num_workers: 0
+output_norm: True
+preprocess_config: conf/preprocess.yaml
+return_lens_rate: True
+scheduler: warmuplr
+scheduler_conf:
+  lr_decay: 1.0
+  warmup_steps: 25000
+shortest_first: True
+sortagrad: 0
+subsampling_factor: 1
+test_manifest: data/manifest.test-clean
+train_manifest: data/manifest.train
+unit_type: char
+vocab_filepath: data/lang_char/vocab.txt
+wav2vec2_optim: Adam
+wav2vec2_optim_conf:
+  lr: 0.0001
+wav2vec2_params_path: exp/wav2vec2/wav2vec2-large-960h-lv60-self.pdparams
+2022-09-05 06:43:29.844 | INFO     | paddlespeech.s2t.utils.utility:all_version:45 - Deps Module Version:[('python', '3.7.13 (default, Mar 29 2022, 02:18:16) \n[GCC 7.5.0]'),
+ ('paddle', '2.3.1'),
+ ('paddle_commit', '3cc6ae69ed93388b2648bcc819d593130dede752'),
+ ('soundfile', '0.10.3')]
+I0905 06:43:29.846365 46716 gen_comm_id_helper.cc:205] Server listening on: 127.0.0.1:41733 successful.
+I0905 06:43:32.755741 46716 nccl_context.cc:83] init nccl context nranks: 2 local rank: 1 gpu id: 1 ring id: 0
+W0905 06:43:33.886379 46716 gpu_resources.cc:61] Please NOTE: device: 1, GPU Compute Capability: 7.0, Driver API Version: 10.2, Runtime API Version: 10.2
+W0905 06:43:33.891255 46716 gpu_resources.cc:91] device: 1, cuDNN Version: 7.6.
+2022-09-05 06:43:29.845 | INFO     | paddlespeech.s2t.training.trainer:__init__:112 - Rank: 1/2
+1998
+***********
+2022-09-05 06:43:34.993 | INFO     | paddlespeech.s2t.training.trainer:__init__:137 - Set seed 1998
+2022-09-05 06:43:42.423 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:400 - count is auto detected as seq
+2022-09-05 06:43:43.864 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:424 - # utts: 281241
+2022-09-05 06:43:44.230 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:467 - # minibatches: 56249
+/home/zhangtianhao/workspace/PaddleSpeech/tools/venv/lib/python3.7/site-packages/librosa/core/constantq.py:1059: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
+Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
+  dtype=np.complex,
+2022-09-05 06:43:44.352 | WARNING  | paddlespeech.s2t.io.reader:__init__:76 - [Experimental feature] Some preprocessing will be done for the mini-batch creation using Transformation(
+    0: <paddlespeech.audio.transform.spectrogram.WavProcess object at 0x7fd797358ad0>)
+2022-09-05 06:43:44.446 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:400 - count is auto detected as seq
+2022-09-05 06:43:44.456 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:424 - # utts: 5567
+2022-09-05 06:43:44.460 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:467 - # minibatches: 1114
+2022-09-05 06:43:44.463 | WARNING  | paddlespeech.s2t.io.reader:__init__:76 - [Experimental feature] Some preprocessing will be done for the mini-batch creation using Transformation(
+    0: <paddlespeech.audio.transform.spectrogram.WavProcess object at 0x7fd797358450>)
+2022-09-05 06:43:44.463 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:setup_dataloader:239 - Setup train/valid Dataloader!

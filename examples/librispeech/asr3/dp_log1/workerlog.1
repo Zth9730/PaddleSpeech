@@ -1,0 +1,740 @@
+I0906 05:41:46.769309 60789 gen_comm_id_helper.cc:205] Server listening on: 127.0.0.1:48901 successful.
+I0906 05:41:46.779955 60789 nccl_context.cc:83] init nccl context nranks: 2 local rank: 1 gpu id: 1 ring id: 0
+W0906 05:41:47.256959 60789 gpu_resources.cc:61] Please NOTE: device: 1, GPU Compute Capability: 7.0, Driver API Version: 10.2, Runtime API Version: 10.2
+W0906 05:41:47.261461 60789 gpu_resources.cc:91] device: 1, cuDNN Version: 7.6.
+----------- train.py Arguments -----------
+benchmark_batch_size: None
+benchmark_max_step: None
+checkpoint_path: None
+conf: None
+config: conf/wav2vec2ASR.yaml
+decode_cfg: None
+dump_config: None
+ngpu: 2
+nxpu: 0
+opts: None
+output: exp/test
+profiler_options: None
+seed: 1998
+-----------------------------------------------------------
+accum_grad: 1
+apply_spec_augment: False
+batch_bins: 0
+batch_count: auto
+batch_frames_in: 0
+batch_frames_inout: 0
+batch_frames_out: 0
+batch_size: 6
+blank_id: 0
+checkpoint:
+  kbest_n: 50
+  latest_n: 5
+ctc_dropout_rate: 0.0
+dev_manifest: data/manifest.dev
+dist_sampler: True
+dnn_blocks: 2
+dnn_neurons: 1024
+freeze_wav2vec2: True
+global_grad_clip: 3.0
+log_interval: 1
+maxlen_in: 51200000000
+maxlen_out: 1500000
+mean_std_filepath: 
+minibatches: 0
+model_optim: adadelta
+model_optim_conf:
+  epsilon: 1e-06
+  lr: 0.9
+  rho: 0.95
+n_epoch: 2
+normalize_wav: True
+num_encs: 1
+num_workers: 0
+output_norm: True
+preprocess_config: conf/preprocess.yaml
+return_lens_rate: True
+scheduler: warmuplr
+scheduler_conf:
+  lr_decay: 1.0
+  warmup_steps: 25000
+shortest_first: True
+sortagrad: 0
+subsampling_factor: 1
+test_manifest: data/manifest.test-clean
+train_manifest: data/manifest.train
+unit_type: char
+vocab_filepath: data/lang_char/vocab.txt
+wav2vec2_params_path: exp/wav2vec2/wav2vec2-large-960h-lv60-self.pdparams
+2022-09-06 05:41:49.131 | INFO     | paddlespeech.s2t.utils.utility:all_version:45 - Deps Module Version:[('python', '3.7.13 (default, Mar 29 2022, 02:18:16) \n[GCC 7.5.0]'),
+ ('paddle', '2.3.1'),
+ ('paddle_commit', '3cc6ae69ed93388b2648bcc819d593130dede752'),
+ ('soundfile', '0.10.3')]
+1998
+2022-09-06 05:41:49.132 | INFO     | paddlespeech.s2t.training.trainer:__init__:114 - Rank: 1/2
+***********
+2022-09-06 05:41:49.133 | INFO     | paddlespeech.s2t.training.trainer:__init__:139 - Set seed 1998
+2022-09-06 05:41:56.635 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:400 - count is auto detected as seq
+2022-09-06 05:41:58.021 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:424 - # utts: 281241
+2022-09-06 05:41:58.291 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:467 - # minibatches: 46874
+/home/zhangtianhao/workspace/PaddleSpeech/tools/venv/lib/python3.7/site-packages/librosa/core/constantq.py:1059: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
+Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
+  dtype=np.complex,
+2022-09-06 05:41:58.408 | WARNING  | paddlespeech.s2t.io.reader:__init__:76 - [Experimental feature] Some preprocessing will be done for the mini-batch creation using Transformation(
+    0: <paddlespeech.audio.transform.spectrogram.WavProcess object at 0x7f1286938f50>)
+2022-09-06 05:41:58.497 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:400 - count is auto detected as seq
+2022-09-06 05:41:58.506 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:424 - # utts: 5567
+2022-09-06 05:41:58.510 | INFO     | paddlespeech.s2t.io.batchfy:make_batchset:467 - # minibatches: 928
+2022-09-06 05:41:58.511 | WARNING  | paddlespeech.s2t.io.reader:__init__:76 - [Experimental feature] Some preprocessing will be done for the mini-batch creation using Transformation(
+    0: <paddlespeech.audio.transform.spectrogram.WavProcess object at 0x7f1286938590>)
+2022-09-06 05:41:58.512 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:setup_dataloader:239 - Setup train/valid Dataloader!
+/home/zhangtianhao/workspace/PaddleSpeech/tools/venv/lib/python3.7/site-packages/paddle/fluid/dygraph/layers.py:1492: UserWarning: Skip loading for masked_spec_embed. masked_spec_embed is not found in the provided dict.
+  warnings.warn(("Skip loading for {}. ".format(key) + str(err)))
+2022-09-06 05:42:02.009 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.masked_spec_embed | [1024] | 1024 | False
+2022-09-06 05:42:02.010 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.0.conv.weight | [512, 1, 10] | 5120 | False
+2022-09-06 05:42:02.011 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.0.conv.bias | [512] | 512 | False
+2022-09-06 05:42:02.011 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.0.layer_norm.weight | [512] | 512 | False
+2022-09-06 05:42:02.011 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.0.layer_norm.bias | [512] | 512 | False
+2022-09-06 05:42:02.012 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.1.conv.weight | [512, 512, 3] | 786432 | False
+2022-09-06 05:42:02.012 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.1.conv.bias | [512] | 512 | False
+2022-09-06 05:42:02.012 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.1.layer_norm.weight | [512] | 512 | False
+2022-09-06 05:42:02.013 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.1.layer_norm.bias | [512] | 512 | False
+2022-09-06 05:42:02.013 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.2.conv.weight | [512, 512, 3] | 786432 | False
+2022-09-06 05:42:02.013 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.2.conv.bias | [512] | 512 | False
+2022-09-06 05:42:02.014 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.2.layer_norm.weight | [512] | 512 | False
+2022-09-06 05:42:02.014 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.2.layer_norm.bias | [512] | 512 | False
+2022-09-06 05:42:02.014 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.3.conv.weight | [512, 512, 3] | 786432 | False
+2022-09-06 05:42:02.015 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.3.conv.bias | [512] | 512 | False
+2022-09-06 05:42:02.015 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.3.layer_norm.weight | [512] | 512 | False
+2022-09-06 05:42:02.016 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.3.layer_norm.bias | [512] | 512 | False
+2022-09-06 05:42:02.016 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.4.conv.weight | [512, 512, 3] | 786432 | False
+2022-09-06 05:42:02.016 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.4.conv.bias | [512] | 512 | False
+2022-09-06 05:42:02.017 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.4.layer_norm.weight | [512] | 512 | False
+2022-09-06 05:42:02.017 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.4.layer_norm.bias | [512] | 512 | False
+2022-09-06 05:42:02.017 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.5.conv.weight | [512, 512, 2] | 524288 | False
+2022-09-06 05:42:02.018 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.5.conv.bias | [512] | 512 | False
+2022-09-06 05:42:02.018 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.5.layer_norm.weight | [512] | 512 | False
+2022-09-06 05:42:02.018 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.5.layer_norm.bias | [512] | 512 | False
+2022-09-06 05:42:02.019 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.6.conv.weight | [512, 512, 2] | 524288 | False
+2022-09-06 05:42:02.019 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.6.conv.bias | [512] | 512 | False
+2022-09-06 05:42:02.019 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.6.layer_norm.weight | [512] | 512 | False
+2022-09-06 05:42:02.020 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_extractor.conv_layers.6.layer_norm.bias | [512] | 512 | False
+2022-09-06 05:42:02.020 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_projection.layer_norm.weight | [512] | 512 | False
+2022-09-06 05:42:02.020 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_projection.layer_norm.bias | [512] | 512 | False
+2022-09-06 05:42:02.021 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_projection.projection.weight | [512, 1024] | 524288 | False
+2022-09-06 05:42:02.021 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.feature_projection.projection.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.021 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.pos_conv_embed.conv.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.022 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.pos_conv_embed.conv.weight_v | [1024, 64, 128] | 8388608 | False
+2022-09-06 05:42:02.022 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.pos_conv_embed.conv.weight_g | [128] | 128 | False
+2022-09-06 05:42:02.022 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.023 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.023 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.023 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.024 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.024 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.025 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.025 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.025 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.025 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.026 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.026 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.027 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.027 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.027 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.028 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.028 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.029 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.0.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.029 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.030 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.030 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.031 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.031 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.032 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.033 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.033 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.034 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.034 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.034 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.035 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.035 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.036 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.037 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.037 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.1.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.037 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.038 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.039 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.039 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.040 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.040 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.040 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.041 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.042 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.042 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.043 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.043 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.044 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.044 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.045 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.045 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.2.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.046 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.046 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.047 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.048 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.048 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.048 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.049 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.049 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.050 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.051 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.051 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.051 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.052 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.052 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.053 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.054 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.3.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.054 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.054 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.055 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.056 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.056 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.057 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.057 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.058 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.058 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.059 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.059 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.060 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.060 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.061 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.061 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.062 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.4.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.062 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.063 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.063 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.063 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.064 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.065 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.065 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.066 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.066 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.066 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.067 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.067 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.068 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.068 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.069 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.069 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.5.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.070 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.070 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.071 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.071 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.072 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.072 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.073 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.073 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.074 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.074 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.075 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.075 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.076 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.076 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.077 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.077 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.6.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.078 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.078 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.079 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.079 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.079 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.080 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.081 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.081 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.082 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.082 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.082 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.083 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.083 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.084 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.084 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.085 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.7.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.085 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.086 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.086 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.087 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.087 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.088 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.088 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.089 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.089 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.089 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.090 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.091 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.091 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.092 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.092 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.092 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.8.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.093 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.093 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.094 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.094 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.095 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.095 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.096 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.096 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.097 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.097 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.098 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.098 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.099 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.099 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.100 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.100 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.9.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.101 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.101 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.102 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.102 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.102 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.103 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.104 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.104 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.105 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.105 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.105 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.106 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.106 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.107 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.107 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.108 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.10.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.108 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.109 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.109 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.110 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.110 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.111 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.111 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.112 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.112 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.113 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.113 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.114 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.114 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.115 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.115 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.116 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.11.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.116 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.117 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.117 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.118 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.118 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.118 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.119 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.119 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.120 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.120 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.121 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.121 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.122 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.122 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.123 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.123 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.12.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.124 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.124 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.125 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.125 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.125 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.126 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.126 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.127 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.127 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.128 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.128 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.129 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.129 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.130 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.130 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.131 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.13.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.131 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.132 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.132 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.133 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.133 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.134 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.134 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.135 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.135 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.135 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.136 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.136 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.137 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.137 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.138 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.138 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.14.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.139 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.139 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.140 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.140 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.141 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.141 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.142 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.142 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.143 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.143 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.144 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.144 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.145 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.145 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.145 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.146 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.15.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.146 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.147 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.147 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.148 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.148 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.149 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.149 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.150 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.150 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.151 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.151 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.152 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.152 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.152 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.153 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.154 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.16.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.154 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.155 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.155 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.155 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.156 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.156 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.157 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.157 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.158 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.158 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.159 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.159 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.160 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.160 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.161 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.161 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.17.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.162 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.162 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.163 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.163 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.164 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.164 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.165 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.165 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.166 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.166 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.167 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.167 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.168 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.168 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.169 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.169 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.18.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.170 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.170 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.171 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.171 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.172 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.172 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.172 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.173 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.174 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.174 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.174 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.175 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.176 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.176 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.177 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.177 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.19.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.177 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.178 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.178 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.179 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.179 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.180 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.180 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.181 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.181 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.182 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.182 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.183 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.183 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.184 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.184 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.185 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.20.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.185 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.186 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.186 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.187 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.187 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.187 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.188 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.189 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.189 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.190 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.190 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.190 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.191 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.191 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.192 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.192 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.21.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.193 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.193 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.194 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.194 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.195 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.195 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.196 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.196 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.197 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.197 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.198 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.198 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.199 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.199 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.200 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.200 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.22.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.201 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.attention.k_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.201 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.attention.k_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.202 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.attention.v_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.202 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.attention.v_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.203 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.attention.q_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.203 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.attention.q_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.203 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.attention.out_proj.weight | [1024, 1024] | 1048576 | False
+2022-09-06 05:42:02.204 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.attention.out_proj.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.204 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.205 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.206 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.feed_forward.intermediate_dense.weight | [1024, 4096] | 4194304 | False
+2022-09-06 05:42:02.206 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.feed_forward.intermediate_dense.bias | [4096] | 4096 | False
+2022-09-06 05:42:02.206 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.feed_forward.output_dense.weight | [4096, 1024] | 4194304 | False
+2022-09-06 05:42:02.207 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.feed_forward.output_dense.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.207 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.final_layer_norm.weight | [1024] | 1024 | False
+2022-09-06 05:42:02.208 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.wav2vec2.encoder.layers.23.final_layer_norm.bias | [1024] | 1024 | False
+2022-09-06 05:42:02.208 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.enc.linear.w.weight | [1024, 1024] | 1048576 | True
+2022-09-06 05:42:02.209 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.enc.linear.w.bias | [1024] | 1024 | True
+2022-09-06 05:42:02.209 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.enc.linear_0.w.weight | [1024, 1024] | 1048576 | True
+2022-09-06 05:42:02.210 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.enc.linear_0.w.bias | [1024] | 1024 | True
+2022-09-06 05:42:02.210 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.ctc.ctc_lo.weight | [1024, 31] | 31744 | True
+2022-09-06 05:42:02.211 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:57 - _layers.ctc.ctc_lo.bias | [31] | 31 | True
+2022-09-06 05:42:02.211 | INFO     | paddlespeech.s2t.utils.layer_tools:print_params:60 - Total parameters: 428.0, 302.86M elements.
+2022-09-06 05:42:02.212 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:setup_model:267 - Setup model!
+2022-09-06 05:42:02.213 | INFO     | paddlespeech.s2t.utils.dynamic_import:instance_class:68 - Instance: WarmupLR {'learning_rate': 0.9, 'verbose': False, 'warmup_steps': 25000}.
+2022-09-06 05:42:02.314 | INFO     | paddlespeech.s2t.training.optimizer:from_args:111 - <GradClip - Gradient Clip By GlobalNorm, global_norm=3.000000>
+2022-09-06 05:42:02.315 | INFO     | paddlespeech.s2t.utils.dynamic_import:instance_class:68 - Instance: Adadelta {'grad_clip': ClipGradByGlobalNormWithLog(global_clip_norm=3.0), 'learning_rate': WarmupLR(warmup_steps=25000, lr=0.9, last_epoch=0), 'rho': 0.95}.
+2022-09-06 05:42:02.315 | INFO     | paddlespeech.s2t.training.optimizer:from_args:120 - <Optimizer paddle.optimizer.adadelta.Adadelta> LR: WarmupLR(warmup_steps=25000, lr=0.9, last_epoch=0)
+2022-09-06 05:42:02.316 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:setup_model:318 - Setup optimizer/lr_scheduler!
+2022-09-06 05:42:02.317 | INFO     | paddlespeech.s2t.training.trainer:resume_or_scratch:229 - Init from scratch!
+2022-09-06 05:42:02.318 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:169 - Train Total Examples: 46874
+/home/zhangtianhao/workspace/PaddleSpeech/tools/venv/lib/python3.7/site-packages/paddle/fluid/dygraph/math_op_patch.py:278: UserWarning: The dtype of left and right variables are not the same, left dtype is paddle.float32, but right dtype is paddle.int64, the right dtype will convert to paddle.float32
+  format(lhs_dtype, rhs_dtype, lhs_dtype))
+/home/zhangtianhao/workspace/PaddleSpeech/paddlespeech/s2t/models/wav2vec2/modeling_wav2vec2.py:141: DeprecationWarning: `np.bool` is a deprecated alias for the builtin `bool`. To silence this warning, use `bool` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.bool_` here.
+Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
+  spec_aug_mask = np.zeros((batch_size, sequence_length), dtype=np.bool)
+/home/zhangtianhao/workspace/PaddleSpeech/tools/venv/lib/python3.7/site-packages/paddle/fluid/dygraph/math_op_patch.py:278: UserWarning: The dtype of left and right variables are not the same, left dtype is paddle.float32, but right dtype is paddle.int32, the right dtype will convert to paddle.float32
+  format(lhs_dtype, rhs_dtype, lhs_dtype))
+2022-09-06 05:42:12.685 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 0, lr: 0.00003600, loss: 1.34609568, batch_size: 6, accum: 1, step_cost: 9.71821189, iter: 1, total: 23437, reader_cost: 0.64476347, batch_cost: 10.36297536, samples: 6, ips: 0.57898430 samples/s
+2022-09-06 05:42:13.293 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 1, lr: 0.00007200, loss: 1.52546549, batch_size: 6, accum: 1, step_cost: 0.60677218, iter: 2, total: 23437, reader_cost: 0.00105715, batch_cost: 0.60782933, samples: 6, ips: 9.87119193 samples/s
+2022-09-06 05:42:13.902 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 2, lr: 0.00010800, loss: 1.23359144, batch_size: 6, accum: 1, step_cost: 0.60788751, iter: 3, total: 23437, reader_cost: 0.00053644, batch_cost: 0.60842395, samples: 6, ips: 9.86154476 samples/s
+2022-09-06 05:42:14.627 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 3, lr: 0.00014400, loss: 1.15995991, batch_size: 6, accum: 1, step_cost: 0.72317457, iter: 4, total: 23437, reader_cost: 0.00020671, batch_cost: 0.72338128, samples: 6, ips: 8.29438107 samples/s
+2022-09-06 05:42:15.316 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 4, lr: 0.00018000, loss: 0.87017232, batch_size: 6, accum: 1, step_cost: 0.68801069, iter: 5, total: 23437, reader_cost: 0.00017667, batch_cost: 0.68818736, samples: 6, ips: 8.71855594 samples/s
+2022-09-06 05:42:15.807 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 5, lr: 0.00021600, loss: 0.80890274, batch_size: 6, accum: 1, step_cost: 0.49077106, iter: 6, total: 23437, reader_cost: 0.00023675, batch_cost: 0.49100780, samples: 6, ips: 12.21976502 samples/s
+2022-09-06 05:42:16.188 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 6, lr: 0.00025200, loss: 0.87846851, batch_size: 6, accum: 1, step_cost: 0.37988377, iter: 7, total: 23437, reader_cost: 0.00034595, batch_cost: 0.38022971, samples: 6, ips: 15.77993465 samples/s
+2022-09-06 05:42:16.885 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 7, lr: 0.00028800, loss: 0.75157565, batch_size: 6, accum: 1, step_cost: 0.69532156, iter: 8, total: 23437, reader_cost: 0.00035024, batch_cost: 0.69567180, samples: 6, ips: 8.62475671 samples/s
+2022-09-06 05:42:17.558 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 8, lr: 0.00032400, loss: 1.49794257, batch_size: 6, accum: 1, step_cost: 0.67156887, iter: 9, total: 23437, reader_cost: 0.00016809, batch_cost: 0.67173696, samples: 6, ips: 8.93206775 samples/s
+2022-09-06 05:42:18.144 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 9, lr: 0.00036000, loss: 0.70897627, batch_size: 6, accum: 1, step_cost: 0.58586645, iter: 10, total: 23437, reader_cost: 0.00016689, batch_cost: 0.58603334, samples: 6, ips: 10.23832527 samples/s
+2022-09-06 05:42:18.730 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 10, lr: 0.00039600, loss: 0.55483192, batch_size: 6, accum: 1, step_cost: 0.58433366, iter: 11, total: 23437, reader_cost: 0.00022817, batch_cost: 0.58456182, samples: 6, ips: 10.26409824 samples/s
+2022-09-06 05:42:19.181 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 11, lr: 0.00043200, loss: 0.54044318, batch_size: 6, accum: 1, step_cost: 0.44986057, iter: 12, total: 23437, reader_cost: 0.00017262, batch_cost: 0.45003319, samples: 6, ips: 13.33235006 samples/s
+2022-09-06 05:42:19.506 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 12, lr: 0.00046800, loss: 0.75701147, batch_size: 6, accum: 1, step_cost: 0.32435894, iter: 13, total: 23437, reader_cost: 0.00016260, batch_cost: 0.32452154, samples: 6, ips: 18.48875723 samples/s
+2022-09-06 05:42:20.061 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 13, lr: 0.00050400, loss: 0.63907272, batch_size: 6, accum: 1, step_cost: 0.55345321, iter: 14, total: 23437, reader_cost: 0.00048256, batch_cost: 0.55393577, samples: 6, ips: 10.83158078 samples/s
+2022-09-06 05:42:20.664 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 14, lr: 0.00054000, loss: 0.69113690, batch_size: 6, accum: 1, step_cost: 0.60240245, iter: 15, total: 23437, reader_cost: 0.00022817, batch_cost: 0.60263062, samples: 6, ips: 9.95634780 samples/s
+2022-09-06 05:42:21.240 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 15, lr: 0.00057600, loss: 0.62426615, batch_size: 6, accum: 1, step_cost: 0.57491827, iter: 16, total: 23437, reader_cost: 0.00021219, batch_cost: 0.57513046, samples: 6, ips: 10.43241558 samples/s
+2022-09-06 05:42:21.782 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 16, lr: 0.00061200, loss: 0.62147504, batch_size: 6, accum: 1, step_cost: 0.54127145, iter: 17, total: 23437, reader_cost: 0.00025296, batch_cost: 0.54152441, samples: 6, ips: 11.07983294 samples/s
+2022-09-06 05:42:22.314 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 17, lr: 0.00064800, loss: 0.54733187, batch_size: 6, accum: 1, step_cost: 0.53096056, iter: 18, total: 23437, reader_cost: 0.00022030, batch_cost: 0.53118086, samples: 6, ips: 11.29558775 samples/s
+2022-09-06 05:42:22.802 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 18, lr: 0.00068400, loss: 0.61272126, batch_size: 6, accum: 1, step_cost: 0.48632669, iter: 19, total: 23437, reader_cost: 0.00017619, batch_cost: 0.48650289, samples: 6, ips: 12.33291759 samples/s
+2022-09-06 05:42:23.418 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 19, lr: 0.00072000, loss: 0.68262100, batch_size: 6, accum: 1, step_cost: 0.61487484, iter: 20, total: 23437, reader_cost: 0.00049162, batch_cost: 0.61536646, samples: 6, ips: 9.75028768 samples/s
+2022-09-06 05:42:23.873 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 20, lr: 0.00075600, loss: 0.70182973, batch_size: 6, accum: 1, step_cost: 0.45386195, iter: 21, total: 23437, reader_cost: 0.00034714, batch_cost: 0.45420909, samples: 6, ips: 13.20977528 samples/s
+2022-09-06 05:42:24.490 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 21, lr: 0.00079200, loss: 0.68992478, batch_size: 6, accum: 1, step_cost: 0.61624074, iter: 22, total: 23437, reader_cost: 0.00030828, batch_cost: 0.61654902, samples: 6, ips: 9.73158638 samples/s
+2022-09-06 05:42:25.077 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 22, lr: 0.00082800, loss: 0.52151942, batch_size: 6, accum: 1, step_cost: 0.58618832, iter: 23, total: 23437, reader_cost: 0.00027132, batch_cost: 0.58645964, samples: 6, ips: 10.23088312 samples/s
+2022-09-06 05:42:25.705 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 23, lr: 0.00086400, loss: 0.72195530, batch_size: 6, accum: 1, step_cost: 0.62648916, iter: 24, total: 23437, reader_cost: 0.00015998, batch_cost: 0.62664914, samples: 6, ips: 9.57473585 samples/s
+2022-09-06 05:42:26.352 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 24, lr: 0.00090000, loss: 0.60000974, batch_size: 6, accum: 1, step_cost: 0.64672613, iter: 25, total: 23437, reader_cost: 0.00024819, batch_cost: 0.64697433, samples: 6, ips: 9.27393834 samples/s
+2022-09-06 05:42:26.987 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 25, lr: 0.00093600, loss: 0.57773608, batch_size: 6, accum: 1, step_cost: 0.63385868, iter: 26, total: 23437, reader_cost: 0.00020146, batch_cost: 0.63406014, samples: 6, ips: 9.46282471 samples/s
+2022-09-06 05:42:27.639 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 26, lr: 0.00097200, loss: 0.55890918, batch_size: 6, accum: 1, step_cost: 0.65060949, iter: 27, total: 23437, reader_cost: 0.00016427, batch_cost: 0.65077376, samples: 6, ips: 9.21979394 samples/s
+2022-09-06 05:42:28.285 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 27, lr: 0.00100800, loss: 0.57965225, batch_size: 6, accum: 1, step_cost: 0.64544034, iter: 28, total: 23437, reader_cost: 0.00017476, batch_cost: 0.64561510, samples: 6, ips: 9.29346292 samples/s
+2022-09-06 05:42:28.888 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 28, lr: 0.00104400, loss: 0.51607430, batch_size: 6, accum: 1, step_cost: 0.60148072, iter: 29, total: 23437, reader_cost: 0.00014925, batch_cost: 0.60162997, samples: 6, ips: 9.97290739 samples/s
+2022-09-06 05:42:29.199 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 29, lr: 0.00108000, loss: 0.50432068, batch_size: 6, accum: 1, step_cost: 0.31076503, iter: 30, total: 23437, reader_cost: 0.00015593, batch_cost: 0.31092095, samples: 6, ips: 19.29750931 samples/s
+2022-09-06 05:42:29.838 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 30, lr: 0.00111600, loss: 0.48937401, batch_size: 6, accum: 1, step_cost: 0.63705897, iter: 31, total: 23437, reader_cost: 0.00018382, batch_cost: 0.63724279, samples: 6, ips: 9.41556351 samples/s
+2022-09-06 05:42:30.475 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 31, lr: 0.00115200, loss: 0.50210351, batch_size: 6, accum: 1, step_cost: 0.63695526, iter: 32, total: 23437, reader_cost: 0.00036240, batch_cost: 0.63731766, samples: 6, ips: 9.41445750 samples/s
+2022-09-06 05:42:31.054 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 32, lr: 0.00118800, loss: 0.49369749, batch_size: 6, accum: 1, step_cost: 0.57722902, iter: 33, total: 23437, reader_cost: 0.00018978, batch_cost: 0.57741880, samples: 6, ips: 10.39107136 samples/s
+2022-09-06 05:42:31.690 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 33, lr: 0.00122400, loss: 0.47141203, batch_size: 6, accum: 1, step_cost: 0.63535857, iter: 34, total: 23437, reader_cost: 0.00017071, batch_cost: 0.63552928, samples: 6, ips: 9.44094976 samples/s
+2022-09-06 05:42:32.049 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 34, lr: 0.00126000, loss: 0.47507873, batch_size: 6, accum: 1, step_cost: 0.35787368, iter: 35, total: 23437, reader_cost: 0.00014949, batch_cost: 0.35802317, samples: 6, ips: 16.75869206 samples/s
+2022-09-06 05:42:32.510 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 35, lr: 0.00129600, loss: 0.46540296, batch_size: 6, accum: 1, step_cost: 0.46024489, iter: 36, total: 23437, reader_cost: 0.00024724, batch_cost: 0.46049213, samples: 6, ips: 13.02953852 samples/s
+2022-09-06 05:42:33.032 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 36, lr: 0.00133200, loss: 0.52666038, batch_size: 6, accum: 1, step_cost: 0.52035403, iter: 37, total: 23437, reader_cost: 0.00017071, batch_cost: 0.52052474, samples: 6, ips: 11.52682963 samples/s
+2022-09-06 05:42:33.577 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 37, lr: 0.00136800, loss: 0.53370929, batch_size: 6, accum: 1, step_cost: 0.54403639, iter: 38, total: 23437, reader_cost: 0.00019288, batch_cost: 0.54422927, samples: 6, ips: 11.02476537 samples/s
+2022-09-06 05:42:34.125 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 38, lr: 0.00140400, loss: 0.52003568, batch_size: 6, accum: 1, step_cost: 0.54684806, iter: 39, total: 23437, reader_cost: 0.00069618, batch_cost: 0.54754424, samples: 6, ips: 10.95801864 samples/s
+2022-09-06 05:42:34.622 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 39, lr: 0.00144000, loss: 0.53930253, batch_size: 6, accum: 1, step_cost: 0.49520206, iter: 40, total: 23437, reader_cost: 0.00028038, batch_cost: 0.49548244, samples: 6, ips: 12.10940986 samples/s
+2022-09-06 05:42:35.247 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 40, lr: 0.00147600, loss: 0.40371653, batch_size: 6, accum: 1, step_cost: 0.62465167, iter: 41, total: 23437, reader_cost: 0.00020719, batch_cost: 0.62485886, samples: 6, ips: 9.60216846 samples/s
+2022-09-06 05:42:35.565 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 41, lr: 0.00151200, loss: 0.34400797, batch_size: 6, accum: 1, step_cost: 0.31705236, iter: 42, total: 23437, reader_cost: 0.00023103, batch_cost: 0.31728339, samples: 6, ips: 18.91053913 samples/s
+2022-09-06 05:42:36.171 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 42, lr: 0.00154800, loss: 0.33604583, batch_size: 6, accum: 1, step_cost: 0.60462928, iter: 43, total: 23437, reader_cost: 0.00021338, batch_cost: 0.60484266, samples: 6, ips: 9.91993516 samples/s
+2022-09-06 05:42:36.820 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 43, lr: 0.00158400, loss: 0.27742419, batch_size: 6, accum: 1, step_cost: 0.64801025, iter: 44, total: 23437, reader_cost: 0.00029993, batch_cost: 0.64831018, samples: 6, ips: 9.25482916 samples/s
+2022-09-06 05:42:37.423 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 44, lr: 0.00162000, loss: 0.34401760, batch_size: 6, accum: 1, step_cost: 0.60195136, iter: 45, total: 23437, reader_cost: 0.00022769, batch_cost: 0.60217905, samples: 6, ips: 9.96381391 samples/s
+2022-09-06 05:42:37.929 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 45, lr: 0.00165600, loss: 0.28536379, batch_size: 6, accum: 1, step_cost: 0.50451398, iter: 46, total: 23437, reader_cost: 0.00024080, batch_cost: 0.50475478, samples: 6, ips: 11.88696020 samples/s
+2022-09-06 05:42:38.509 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 46, lr: 0.00169200, loss: 0.24652010, batch_size: 6, accum: 1, step_cost: 0.57901621, iter: 47, total: 23437, reader_cost: 0.00021315, batch_cost: 0.57922935, samples: 6, ips: 10.35859103 samples/s
+2022-09-06 05:42:39.121 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 47, lr: 0.00172800, loss: 0.25328976, batch_size: 6, accum: 1, step_cost: 0.61083460, iter: 48, total: 23437, reader_cost: 0.00016093, batch_cost: 0.61099553, samples: 6, ips: 9.82003909 samples/s
+2022-09-06 05:42:39.898 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 48, lr: 0.00176400, loss: 0.19738299, batch_size: 6, accum: 1, step_cost: 0.77636099, iter: 49, total: 23437, reader_cost: 0.00016570, batch_cost: 0.77652669, samples: 6, ips: 7.72671446 samples/s
+2022-09-06 05:42:40.581 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 49, lr: 0.00180000, loss: 0.24002360, batch_size: 6, accum: 1, step_cost: 0.68194342, iter: 50, total: 23437, reader_cost: 0.00052547, batch_cost: 0.68246889, samples: 6, ips: 8.79160952 samples/s
+2022-09-06 05:42:41.065 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 50, lr: 0.00183600, loss: 0.22243325, batch_size: 6, accum: 1, step_cost: 0.48236513, iter: 51, total: 23437, reader_cost: 0.00021887, batch_cost: 0.48258400, samples: 6, ips: 12.43306866 samples/s
+2022-09-06 05:42:41.644 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 51, lr: 0.00187200, loss: 0.19662024, batch_size: 6, accum: 1, step_cost: 0.57780480, iter: 52, total: 23437, reader_cost: 0.00032520, batch_cost: 0.57813001, samples: 6, ips: 10.37828850 samples/s
+2022-09-06 05:42:42.247 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 52, lr: 0.00190800, loss: 0.15721272, batch_size: 6, accum: 1, step_cost: 0.60251379, iter: 53, total: 23437, reader_cost: 0.00015402, batch_cost: 0.60266781, samples: 6, ips: 9.95573335 samples/s
+2022-09-06 05:42:42.907 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 53, lr: 0.00194400, loss: 0.16228324, batch_size: 6, accum: 1, step_cost: 0.65819836, iter: 54, total: 23437, reader_cost: 0.00027132, batch_cost: 0.65846968, samples: 6, ips: 9.11203691 samples/s
+2022-09-06 05:42:43.522 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 54, lr: 0.00198000, loss: 0.14117038, batch_size: 6, accum: 1, step_cost: 0.61359930, iter: 55, total: 23437, reader_cost: 0.00045848, batch_cost: 0.61405778, samples: 6, ips: 9.77106748 samples/s
+2022-09-06 05:42:44.121 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 55, lr: 0.00201600, loss: 0.10995521, batch_size: 6, accum: 1, step_cost: 0.59803820, iter: 56, total: 23437, reader_cost: 0.00025129, batch_cost: 0.59828949, samples: 6, ips: 10.02859001 samples/s
+2022-09-06 05:42:44.758 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 56, lr: 0.00205200, loss: 0.09460627, batch_size: 6, accum: 1, step_cost: 0.63545179, iter: 57, total: 23437, reader_cost: 0.00020862, batch_cost: 0.63566041, samples: 6, ips: 9.43900219 samples/s
+2022-09-06 05:42:45.457 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 57, lr: 0.00208800, loss: 0.13078094, batch_size: 6, accum: 1, step_cost: 0.69863558, iter: 58, total: 23437, reader_cost: 0.00027394, batch_cost: 0.69890952, samples: 6, ips: 8.58480221 samples/s
+2022-09-06 05:42:46.098 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 58, lr: 0.00212400, loss: 0.09889544, batch_size: 6, accum: 1, step_cost: 0.64007568, iter: 59, total: 23437, reader_cost: 0.00049233, batch_cost: 0.64056802, samples: 6, ips: 9.36668680 samples/s
+2022-09-06 05:42:46.782 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 59, lr: 0.00216000, loss: 0.09078447, batch_size: 6, accum: 1, step_cost: 0.68248796, iter: 60, total: 23437, reader_cost: 0.00023937, batch_cost: 0.68272734, samples: 6, ips: 8.78828146 samples/s
+2022-09-06 05:42:47.338 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 60, lr: 0.00219600, loss: 0.09203261, batch_size: 6, accum: 1, step_cost: 0.55449486, iter: 61, total: 23437, reader_cost: 0.00026894, batch_cost: 0.55476379, samples: 6, ips: 10.81541381 samples/s
+2022-09-06 05:42:48.001 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 61, lr: 0.00223200, loss: 0.12161256, batch_size: 6, accum: 1, step_cost: 0.66105247, iter: 62, total: 23437, reader_cost: 0.00067425, batch_cost: 0.66172671, samples: 6, ips: 9.06718722 samples/s
+2022-09-06 05:42:48.702 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 62, lr: 0.00226800, loss: 0.11421388, batch_size: 6, accum: 1, step_cost: 0.69972205, iter: 63, total: 23437, reader_cost: 0.00031376, batch_cost: 0.70003581, samples: 6, ips: 8.57099010 samples/s
+2022-09-06 05:42:49.116 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 63, lr: 0.00230400, loss: 0.08618739, batch_size: 6, accum: 1, step_cost: 0.41270852, iter: 64, total: 23437, reader_cost: 0.00021338, batch_cost: 0.41292191, samples: 6, ips: 14.53059264 samples/s
+2022-09-06 05:42:49.743 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 64, lr: 0.00234000, loss: 0.09322556, batch_size: 6, accum: 1, step_cost: 0.62581754, iter: 65, total: 23437, reader_cost: 0.00021338, batch_cost: 0.62603092, samples: 6, ips: 9.58419112 samples/s
+2022-09-06 05:42:50.343 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 65, lr: 0.00237600, loss: 0.11995200, batch_size: 6, accum: 1, step_cost: 0.59845567, iter: 66, total: 23437, reader_cost: 0.00044322, batch_cost: 0.59889889, samples: 6, ips: 10.01838561 samples/s
+2022-09-06 05:42:51.054 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 66, lr: 0.00241200, loss: 0.08522306, batch_size: 6, accum: 1, step_cost: 0.71036053, iter: 67, total: 23437, reader_cost: 0.00019336, batch_cost: 0.71055388, samples: 6, ips: 8.44411681 samples/s
+2022-09-06 05:42:51.675 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 67, lr: 0.00244800, loss: 0.12258589, batch_size: 6, accum: 1, step_cost: 0.62009239, iter: 68, total: 23437, reader_cost: 0.00033092, batch_cost: 0.62042332, samples: 6, ips: 9.67081642 samples/s
+2022-09-06 05:42:52.334 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 68, lr: 0.00248400, loss: 0.08479404, batch_size: 6, accum: 1, step_cost: 0.65767908, iter: 69, total: 23437, reader_cost: 0.00024509, batch_cost: 0.65792418, samples: 6, ips: 9.11959193 samples/s
+2022-09-06 05:42:52.869 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 69, lr: 0.00252000, loss: 0.09148223, batch_size: 6, accum: 1, step_cost: 0.53263450, iter: 70, total: 23437, reader_cost: 0.00164437, batch_cost: 0.53427887, samples: 6, ips: 11.23009039 samples/s
+2022-09-06 05:42:53.452 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 70, lr: 0.00255600, loss: 0.14266568, batch_size: 6, accum: 1, step_cost: 0.58182144, iter: 71, total: 23437, reader_cost: 0.00051498, batch_cost: 0.58233643, samples: 6, ips: 10.30332250 samples/s
+2022-09-06 05:42:53.883 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 71, lr: 0.00259200, loss: 0.14752690, batch_size: 6, accum: 1, step_cost: 0.42920804, iter: 72, total: 23437, reader_cost: 0.00019598, batch_cost: 0.42940402, samples: 6, ips: 13.97285474 samples/s
+2022-09-06 05:42:54.149 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 72, lr: 0.00262800, loss: 0.08213795, batch_size: 6, accum: 1, step_cost: 0.26489472, iter: 73, total: 23437, reader_cost: 0.00019240, batch_cost: 0.26508713, samples: 6, ips: 22.63406772 samples/s
+2022-09-06 05:42:54.749 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 73, lr: 0.00266400, loss: 0.07700472, batch_size: 6, accum: 1, step_cost: 0.59927297, iter: 74, total: 23437, reader_cost: 0.00023103, batch_cost: 0.59950399, samples: 6, ips: 10.00827361 samples/s
+2022-09-06 05:42:55.203 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 74, lr: 0.00270000, loss: 0.11862461, batch_size: 6, accum: 1, step_cost: 0.45297980, iter: 75, total: 23437, reader_cost: 0.00030875, batch_cost: 0.45328856, samples: 6, ips: 13.23660157 samples/s
+2022-09-06 05:42:55.773 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 75, lr: 0.00273600, loss: 0.08761517, batch_size: 6, accum: 1, step_cost: 0.56848097, iter: 76, total: 23437, reader_cost: 0.00046587, batch_cost: 0.56894684, samples: 6, ips: 10.54580076 samples/s
+2022-09-06 05:42:56.431 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 76, lr: 0.00277200, loss: 0.06733374, batch_size: 6, accum: 1, step_cost: 0.65685129, iter: 77, total: 23437, reader_cost: 0.00062513, batch_cost: 0.65747643, samples: 6, ips: 9.12580249 samples/s
+2022-09-06 05:42:56.845 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 77, lr: 0.00280800, loss: 0.09023724, batch_size: 6, accum: 1, step_cost: 0.41300488, iter: 78, total: 23437, reader_cost: 0.00074482, batch_cost: 0.41374969, samples: 6, ips: 14.50152127 samples/s
+2022-09-06 05:42:57.377 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 78, lr: 0.00284400, loss: 0.08058906, batch_size: 6, accum: 1, step_cost: 0.53074312, iter: 79, total: 23437, reader_cost: 0.00058603, batch_cost: 0.53132915, samples: 6, ips: 11.29243510 samples/s
+2022-09-06 05:42:58.131 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 79, lr: 0.00288000, loss: 0.09170368, batch_size: 6, accum: 1, step_cost: 0.75182319, iter: 80, total: 23437, reader_cost: 0.00017381, batch_cost: 0.75199699, samples: 6, ips: 7.97875530 samples/s
+2022-09-06 05:42:58.810 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 80, lr: 0.00291600, loss: 0.08257542, batch_size: 6, accum: 1, step_cost: 0.67825007, iter: 81, total: 23437, reader_cost: 0.00049901, batch_cost: 0.67874908, samples: 6, ips: 8.83979093 samples/s
+2022-09-06 05:42:59.472 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 81, lr: 0.00295200, loss: 0.07192761, batch_size: 6, accum: 1, step_cost: 0.66062307, iter: 82, total: 23437, reader_cost: 0.00052714, batch_cost: 0.66115022, samples: 6, ips: 9.07509344 samples/s
+2022-09-06 05:42:59.715 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 82, lr: 0.00298800, loss: 0.11385772, batch_size: 6, accum: 1, step_cost: 0.24188161, iter: 83, total: 23437, reader_cost: 0.00036979, batch_cost: 0.24225140, samples: 6, ips: 24.76765911 samples/s
+2022-09-06 05:43:00.249 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 83, lr: 0.00302400, loss: 0.05925931, batch_size: 6, accum: 1, step_cost: 0.53264928, iter: 84, total: 23437, reader_cost: 0.00059462, batch_cost: 0.53324389, samples: 6, ips: 11.25188692 samples/s
+2022-09-06 05:43:00.909 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 84, lr: 0.00306000, loss: 0.05760616, batch_size: 6, accum: 1, step_cost: 0.65865064, iter: 85, total: 23437, reader_cost: 0.00016975, batch_cost: 0.65882039, samples: 6, ips: 9.10718624 samples/s
+2022-09-06 05:43:01.559 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 85, lr: 0.00309600, loss: 0.08187243, batch_size: 6, accum: 1, step_cost: 0.64855623, iter: 86, total: 23437, reader_cost: 0.00015306, batch_cost: 0.64870930, samples: 6, ips: 9.24913521 samples/s
+2022-09-06 05:43:02.253 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 86, lr: 0.00313200, loss: 0.06074125, batch_size: 6, accum: 1, step_cost: 0.69378448, iter: 87, total: 23437, reader_cost: 0.00025892, batch_cost: 0.69404340, samples: 6, ips: 8.64499254 samples/s
+2022-09-06 05:43:03.004 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 87, lr: 0.00316800, loss: 0.08714724, batch_size: 6, accum: 1, step_cost: 0.74897599, iter: 88, total: 23437, reader_cost: 0.00024509, batch_cost: 0.74922109, samples: 6, ips: 8.00831705 samples/s
+2022-09-06 05:43:03.602 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 88, lr: 0.00320400, loss: 0.07053673, batch_size: 6, accum: 1, step_cost: 0.59712195, iter: 89, total: 23437, reader_cost: 0.00032544, batch_cost: 0.59744740, samples: 6, ips: 10.04272518 samples/s
+2022-09-06 05:43:04.249 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 89, lr: 0.00324000, loss: 0.07579770, batch_size: 6, accum: 1, step_cost: 0.64554572, iter: 90, total: 23437, reader_cost: 0.00023246, batch_cost: 0.64577818, samples: 6, ips: 9.29111604 samples/s
+2022-09-06 05:43:04.835 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 90, lr: 0.00327600, loss: 0.06537618, batch_size: 6, accum: 1, step_cost: 0.58542156, iter: 91, total: 23437, reader_cost: 0.00017548, batch_cost: 0.58559704, samples: 6, ips: 10.24595346 samples/s
+2022-09-06 05:43:05.441 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 91, lr: 0.00331200, loss: 0.05212538, batch_size: 6, accum: 1, step_cost: 0.60418415, iter: 92, total: 23437, reader_cost: 0.00019765, batch_cost: 0.60438180, samples: 6, ips: 9.92749948 samples/s
+2022-09-06 05:43:06.008 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 92, lr: 0.00334800, loss: 0.04659498, batch_size: 6, accum: 1, step_cost: 0.56652188, iter: 93, total: 23437, reader_cost: 0.00016165, batch_cost: 0.56668353, samples: 6, ips: 10.58792019 samples/s
+2022-09-06 05:43:06.784 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 93, lr: 0.00338400, loss: 0.05952954, batch_size: 6, accum: 1, step_cost: 0.77524137, iter: 94, total: 23437, reader_cost: 0.00024772, batch_cost: 0.77548909, samples: 6, ips: 7.73705274 samples/s
+2022-09-06 05:43:07.292 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 94, lr: 0.00342000, loss: 0.04150863, batch_size: 6, accum: 1, step_cost: 0.50664997, iter: 95, total: 23437, reader_cost: 0.00021172, batch_cost: 0.50686169, samples: 6, ips: 11.83754890 samples/s
+2022-09-06 05:43:07.912 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 95, lr: 0.00345600, loss: 0.04550392, batch_size: 6, accum: 1, step_cost: 0.61857367, iter: 96, total: 23437, reader_cost: 0.00032973, batch_cost: 0.61890340, samples: 6, ips: 9.69456625 samples/s
+2022-09-06 05:43:08.493 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 96, lr: 0.00349200, loss: 0.06441935, batch_size: 6, accum: 1, step_cost: 0.58064938, iter: 97, total: 23437, reader_cost: 0.00021052, batch_cost: 0.58085990, samples: 6, ips: 10.32951320 samples/s
+2022-09-06 05:43:09.715 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 97, lr: 0.00352800, loss: 0.06786680, batch_size: 6, accum: 1, step_cost: 1.22042823, iter: 98, total: 23437, reader_cost: 0.00040889, batch_cost: 1.22083712, samples: 6, ips: 4.91466054 samples/s
+2022-09-06 05:43:10.403 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 98, lr: 0.00356400, loss: 0.06758474, batch_size: 6, accum: 1, step_cost: 0.68734431, iter: 99, total: 23437, reader_cost: 0.00023484, batch_cost: 0.68757915, samples: 6, ips: 8.72626803 samples/s
+2022-09-06 05:43:11.097 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 99, lr: 0.00360000, loss: 0.06020145, batch_size: 6, accum: 1, step_cost: 0.69202375, iter: 100, total: 23437, reader_cost: 0.00030732, batch_cost: 0.69233108, samples: 6, ips: 8.66637395 samples/s
+2022-09-06 05:43:11.610 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 100, lr: 0.00363600, loss: 0.07852530, batch_size: 6, accum: 1, step_cost: 0.51211071, iter: 101, total: 23437, reader_cost: 0.00044537, batch_cost: 0.51255608, samples: 6, ips: 11.70603624 samples/s
+2022-09-06 05:43:12.250 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 101, lr: 0.00367200, loss: 0.06676617, batch_size: 6, accum: 1, step_cost: 0.63863015, iter: 102, total: 23437, reader_cost: 0.00026727, batch_cost: 0.63889742, samples: 6, ips: 9.39117896 samples/s
+2022-09-06 05:43:12.830 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 102, lr: 0.00370800, loss: 0.07201578, batch_size: 6, accum: 1, step_cost: 0.57880354, iter: 103, total: 23437, reader_cost: 0.00015926, batch_cost: 0.57896280, samples: 6, ips: 10.36336008 samples/s
+2022-09-06 05:43:13.514 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 103, lr: 0.00374400, loss: 0.05246073, batch_size: 6, accum: 1, step_cost: 0.68323946, iter: 104, total: 23437, reader_cost: 0.00031281, batch_cost: 0.68355227, samples: 6, ips: 8.77767554 samples/s
+2022-09-06 05:43:14.036 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 104, lr: 0.00378000, loss: 0.07924436, batch_size: 6, accum: 1, step_cost: 0.52148581, iter: 105, total: 23437, reader_cost: 0.00024295, batch_cost: 0.52172875, samples: 6, ips: 11.50022872 samples/s
+2022-09-06 05:43:14.711 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 105, lr: 0.00381600, loss: 0.04408749, batch_size: 6, accum: 1, step_cost: 0.67353702, iter: 106, total: 23437, reader_cost: 0.00032687, batch_cost: 0.67386389, samples: 6, ips: 8.90387526 samples/s
+2022-09-06 05:43:15.270 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 106, lr: 0.00385200, loss: 0.04993420, batch_size: 6, accum: 1, step_cost: 0.55749130, iter: 107, total: 23437, reader_cost: 0.00017285, batch_cost: 0.55766416, samples: 6, ips: 10.75916380 samples/s
+2022-09-06 05:43:16.084 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 107, lr: 0.00388800, loss: 0.07246562, batch_size: 6, accum: 1, step_cost: 0.81323218, iter: 108, total: 23437, reader_cost: 0.00036764, batch_cost: 0.81359982, samples: 6, ips: 7.37463286 samples/s
+2022-09-06 05:43:16.568 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 108, lr: 0.00392400, loss: 0.03582522, batch_size: 6, accum: 1, step_cost: 0.48294830, iter: 109, total: 23437, reader_cost: 0.00026512, batch_cost: 0.48321342, samples: 6, ips: 12.41687357 samples/s
+2022-09-06 05:43:17.353 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 109, lr: 0.00396000, loss: 0.07568008, batch_size: 6, accum: 1, step_cost: 0.78386331, iter: 110, total: 23437, reader_cost: 0.00060749, batch_cost: 0.78447080, samples: 6, ips: 7.64846827 samples/s
+2022-09-06 05:43:17.912 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 110, lr: 0.00399600, loss: 0.08906285, batch_size: 6, accum: 1, step_cost: 0.55776095, iter: 111, total: 23437, reader_cost: 0.00020647, batch_cost: 0.55796742, samples: 6, ips: 10.75331594 samples/s
+2022-09-06 05:43:18.470 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 111, lr: 0.00403200, loss: 0.04818936, batch_size: 6, accum: 1, step_cost: 0.55644488, iter: 112, total: 23437, reader_cost: 0.00015140, batch_cost: 0.55659628, samples: 6, ips: 10.77980616 samples/s
+2022-09-06 05:43:18.854 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 112, lr: 0.00406800, loss: 0.06090012, batch_size: 6, accum: 1, step_cost: 0.38378572, iter: 113, total: 23437, reader_cost: 0.00019765, batch_cost: 0.38398337, samples: 6, ips: 15.62567656 samples/s
+2022-09-06 05:43:19.480 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 113, lr: 0.00410400, loss: 0.02843416, batch_size: 6, accum: 1, step_cost: 0.62482357, iter: 114, total: 23437, reader_cost: 0.00016403, batch_cost: 0.62498760, samples: 6, ips: 9.60019043 samples/s
+2022-09-06 05:43:20.080 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 114, lr: 0.00414000, loss: 0.06659389, batch_size: 6, accum: 1, step_cost: 0.59816885, iter: 115, total: 23437, reader_cost: 0.00019193, batch_cost: 0.59836078, samples: 6, ips: 10.02739523 samples/s
+2022-09-06 05:43:20.629 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 115, lr: 0.00417600, loss: 0.07721698, batch_size: 6, accum: 1, step_cost: 0.54864788, iter: 116, total: 23437, reader_cost: 0.00024056, batch_cost: 0.54888844, samples: 6, ips: 10.93118293 samples/s
+2022-09-06 05:43:20.965 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 116, lr: 0.00421200, loss: 0.13709575, batch_size: 6, accum: 1, step_cost: 0.33448815, iter: 117, total: 23437, reader_cost: 0.00018525, batch_cost: 0.33467340, samples: 6, ips: 17.92792590 samples/s
+2022-09-06 05:43:21.600 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 117, lr: 0.00424800, loss: 0.10492953, batch_size: 6, accum: 1, step_cost: 0.63441658, iter: 118, total: 23437, reader_cost: 0.00017214, batch_cost: 0.63458872, samples: 6, ips: 9.45494275 samples/s
+2022-09-06 05:43:22.395 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 118, lr: 0.00428400, loss: 0.08608971, batch_size: 6, accum: 1, step_cost: 0.79424238, iter: 119, total: 23437, reader_cost: 0.00026274, batch_cost: 0.79450512, samples: 6, ips: 7.55187079 samples/s
+2022-09-06 05:43:23.058 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 119, lr: 0.00432000, loss: 0.08570158, batch_size: 6, accum: 1, step_cost: 0.66212201, iter: 120, total: 23437, reader_cost: 0.00019765, batch_cost: 0.66231966, samples: 6, ips: 9.05906975 samples/s
+2022-09-06 05:43:23.689 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 120, lr: 0.00435600, loss: 0.05484843, batch_size: 6, accum: 1, step_cost: 0.63017440, iter: 121, total: 23437, reader_cost: 0.00016212, batch_cost: 0.63033652, samples: 6, ips: 9.51872497 samples/s
+2022-09-06 05:43:24.166 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 121, lr: 0.00439200, loss: 0.06389707, batch_size: 6, accum: 1, step_cost: 0.47542620, iter: 122, total: 23437, reader_cost: 0.00018239, batch_cost: 0.47560859, samples: 6, ips: 12.61541562 samples/s
+2022-09-06 05:43:24.744 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 122, lr: 0.00442800, loss: 0.05638395, batch_size: 6, accum: 1, step_cost: 0.57736039, iter: 123, total: 23437, reader_cost: 0.00045204, batch_cost: 0.57781243, samples: 6, ips: 10.38399255 samples/s
+2022-09-06 05:43:25.299 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 123, lr: 0.00446400, loss: 0.05694927, batch_size: 6, accum: 1, step_cost: 0.55401444, iter: 124, total: 23437, reader_cost: 0.00041175, batch_cost: 0.55442619, samples: 6, ips: 10.82199953 samples/s
+2022-09-06 05:43:25.853 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 124, lr: 0.00450000, loss: 0.07636921, batch_size: 6, accum: 1, step_cost: 0.55268884, iter: 125, total: 23437, reader_cost: 0.00016975, batch_cost: 0.55285859, samples: 6, ips: 10.85268475 samples/s
+2022-09-06 05:43:26.434 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 125, lr: 0.00453600, loss: 0.05772611, batch_size: 6, accum: 1, step_cost: 0.58003998, iter: 126, total: 23437, reader_cost: 0.00026131, batch_cost: 0.58030128, samples: 6, ips: 10.33945669 samples/s
+2022-09-06 05:43:27.148 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 126, lr: 0.00457200, loss: 0.07525548, batch_size: 6, accum: 1, step_cost: 0.71255994, iter: 127, total: 23437, reader_cost: 0.00018573, batch_cost: 0.71274567, samples: 6, ips: 8.41815009 samples/s
+2022-09-06 05:43:27.731 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 127, lr: 0.00460800, loss: 0.04577069, batch_size: 6, accum: 1, step_cost: 0.58245564, iter: 128, total: 23437, reader_cost: 0.00017309, batch_cost: 0.58262873, samples: 6, ips: 10.29815339 samples/s
+2022-09-06 05:43:28.474 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 128, lr: 0.00464400, loss: 0.05063793, batch_size: 6, accum: 1, step_cost: 0.74176836, iter: 129, total: 23437, reader_cost: 0.00018573, batch_cost: 0.74195409, samples: 6, ips: 8.08675374 samples/s
+2022-09-06 05:43:29.033 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 129, lr: 0.00468000, loss: 0.05851404, batch_size: 6, accum: 1, step_cost: 0.55843687, iter: 130, total: 23437, reader_cost: 0.00027561, batch_cost: 0.55871248, samples: 6, ips: 10.73897611 samples/s
+2022-09-06 05:43:29.686 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 130, lr: 0.00471600, loss: 0.07831326, batch_size: 6, accum: 1, step_cost: 0.65153217, iter: 131, total: 23437, reader_cost: 0.00014806, batch_cost: 0.65168023, samples: 6, ips: 9.20696948 samples/s
+2022-09-06 05:43:30.192 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 131, lr: 0.00475200, loss: 0.05250630, batch_size: 6, accum: 1, step_cost: 0.50509620, iter: 132, total: 23437, reader_cost: 0.00016618, batch_cost: 0.50526237, samples: 6, ips: 11.87501840 samples/s
+2022-09-06 05:43:30.524 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 132, lr: 0.00478800, loss: 0.12625460, batch_size: 6, accum: 1, step_cost: 0.33086109, iter: 133, total: 23437, reader_cost: 0.00021148, batch_cost: 0.33107257, samples: 6, ips: 18.12291492 samples/s
+2022-09-06 05:43:31.107 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 133, lr: 0.00482400, loss: 0.08057609, batch_size: 6, accum: 1, step_cost: 0.58195186, iter: 134, total: 23437, reader_cost: 0.00016832, batch_cost: 0.58212018, samples: 6, ips: 10.30714997 samples/s
+2022-09-06 05:43:31.684 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 134, lr: 0.00486000, loss: 0.06286328, batch_size: 6, accum: 1, step_cost: 0.57566571, iter: 135, total: 23437, reader_cost: 0.00023890, batch_cost: 0.57590461, samples: 6, ips: 10.41839207 samples/s
+2022-09-06 05:43:32.342 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 135, lr: 0.00489600, loss: 0.06786007, batch_size: 6, accum: 1, step_cost: 0.65727067, iter: 136, total: 23437, reader_cost: 0.00024724, batch_cost: 0.65751791, samples: 6, ips: 9.12522672 samples/s
+2022-09-06 05:43:32.895 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 136, lr: 0.00493200, loss: 0.05367301, batch_size: 6, accum: 1, step_cost: 0.55216527, iter: 137, total: 23437, reader_cost: 0.00022006, batch_cost: 0.55238533, samples: 6, ips: 10.86198288 samples/s
+2022-09-06 05:43:33.599 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 137, lr: 0.00496800, loss: 0.07137582, batch_size: 6, accum: 1, step_cost: 0.70254326, iter: 138, total: 23437, reader_cost: 0.00015426, batch_cost: 0.70269752, samples: 6, ips: 8.53852457 samples/s
+2022-09-06 05:43:34.264 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 138, lr: 0.00500400, loss: 0.05075207, batch_size: 6, accum: 1, step_cost: 0.66418433, iter: 139, total: 23437, reader_cost: 0.00015950, batch_cost: 0.66434383, samples: 6, ips: 9.03146788 samples/s
+2022-09-06 05:43:34.893 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 139, lr: 0.00504000, loss: 0.06029501, batch_size: 6, accum: 1, step_cost: 0.62819362, iter: 140, total: 23437, reader_cost: 0.00057054, batch_cost: 0.62876415, samples: 6, ips: 9.54252875 samples/s
+2022-09-06 05:43:35.563 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 140, lr: 0.00507600, loss: 0.05431123, batch_size: 6, accum: 1, step_cost: 0.66910887, iter: 141, total: 23437, reader_cost: 0.00046778, batch_cost: 0.66957664, samples: 6, ips: 8.96088603 samples/s
+2022-09-06 05:43:36.140 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 141, lr: 0.00511200, loss: 0.06701105, batch_size: 6, accum: 1, step_cost: 0.57566309, iter: 142, total: 23437, reader_cost: 0.00023127, batch_cost: 0.57589436, samples: 6, ips: 10.41857754 samples/s
+2022-09-06 05:43:36.426 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 142, lr: 0.00514800, loss: 0.05768875, batch_size: 6, accum: 1, step_cost: 0.28550315, iter: 143, total: 23437, reader_cost: 0.00017381, batch_cost: 0.28567696, samples: 6, ips: 21.00274408 samples/s
+2022-09-06 05:43:37.173 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 143, lr: 0.00518400, loss: 0.08008981, batch_size: 6, accum: 1, step_cost: 0.74557304, iter: 144, total: 23437, reader_cost: 0.00015140, batch_cost: 0.74572444, samples: 6, ips: 8.04586746 samples/s
+2022-09-06 05:43:37.708 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 144, lr: 0.00522000, loss: 0.11081284, batch_size: 6, accum: 1, step_cost: 0.53381991, iter: 145, total: 23437, reader_cost: 0.00021482, batch_cost: 0.53403473, samples: 6, ips: 11.23522437 samples/s
+2022-09-06 05:43:38.249 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 145, lr: 0.00525600, loss: 0.08730417, batch_size: 6, accum: 1, step_cost: 0.54005194, iter: 146, total: 23437, reader_cost: 0.00031948, batch_cost: 0.54037142, samples: 6, ips: 11.10347402 samples/s
+2022-09-06 05:43:38.881 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 146, lr: 0.00529200, loss: 0.03569758, batch_size: 6, accum: 1, step_cost: 0.63157153, iter: 147, total: 23437, reader_cost: 0.00016499, batch_cost: 0.63173652, samples: 6, ips: 9.49763048 samples/s
+2022-09-06 05:43:39.393 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 147, lr: 0.00532800, loss: 0.05063558, batch_size: 6, accum: 1, step_cost: 0.51052237, iter: 148, total: 23437, reader_cost: 0.00017881, batch_cost: 0.51070118, samples: 6, ips: 11.74855325 samples/s
+2022-09-06 05:43:39.908 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 148, lr: 0.00536400, loss: 0.02672050, batch_size: 6, accum: 1, step_cost: 0.51414299, iter: 149, total: 23437, reader_cost: 0.00017381, batch_cost: 0.51431680, samples: 6, ips: 11.66596159 samples/s
+2022-09-06 05:43:40.584 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 149, lr: 0.00540000, loss: 0.04182846, batch_size: 6, accum: 1, step_cost: 0.67541575, iter: 150, total: 23437, reader_cost: 0.00020528, batch_cost: 0.67562103, samples: 6, ips: 8.88071820 samples/s
+2022-09-06 05:43:41.336 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 150, lr: 0.00543600, loss: 0.07997584, batch_size: 6, accum: 1, step_cost: 0.75084209, iter: 151, total: 23437, reader_cost: 0.00022840, batch_cost: 0.75107050, samples: 6, ips: 7.98859761 samples/s
+2022-09-06 05:43:41.954 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 151, lr: 0.00547200, loss: 0.05286878, batch_size: 6, accum: 1, step_cost: 0.61670542, iter: 152, total: 23437, reader_cost: 0.00049829, batch_cost: 0.61720371, samples: 6, ips: 9.72126363 samples/s
+2022-09-06 05:43:42.621 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 152, lr: 0.00550800, loss: 0.05688388, batch_size: 6, accum: 1, step_cost: 0.66647363, iter: 153, total: 23437, reader_cost: 0.00019765, batch_cost: 0.66667128, samples: 6, ips: 8.99993777 samples/s
+2022-09-06 05:43:43.223 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 153, lr: 0.00554400, loss: 0.06944696, batch_size: 6, accum: 1, step_cost: 0.60047531, iter: 154, total: 23437, reader_cost: 0.00026059, batch_cost: 0.60073590, samples: 6, ips: 9.98774998 samples/s
+2022-09-06 05:43:43.589 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 154, lr: 0.00558000, loss: 0.06409258, batch_size: 6, accum: 1, step_cost: 0.36523581, iter: 155, total: 23437, reader_cost: 0.00016737, batch_cost: 0.36540318, samples: 6, ips: 16.42021855 samples/s
+2022-09-06 05:43:44.168 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 155, lr: 0.00561600, loss: 0.06436586, batch_size: 6, accum: 1, step_cost: 0.57827806, iter: 156, total: 23437, reader_cost: 0.00037956, batch_cost: 0.57865763, samples: 6, ips: 10.36882557 samples/s
+2022-09-06 05:43:44.881 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 156, lr: 0.00565200, loss: 0.05901418, batch_size: 6, accum: 1, step_cost: 0.71163893, iter: 157, total: 23437, reader_cost: 0.00040054, batch_cost: 0.71203947, samples: 6, ips: 8.42649916 samples/s
+2022-09-06 05:43:45.580 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 157, lr: 0.00568800, loss: 0.05174353, batch_size: 6, accum: 1, step_cost: 0.69690037, iter: 158, total: 23437, reader_cost: 0.00100875, batch_cost: 0.69790912, samples: 6, ips: 8.59710793 samples/s
+2022-09-06 05:43:46.172 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 158, lr: 0.00572400, loss: 0.08333484, batch_size: 6, accum: 1, step_cost: 0.59150982, iter: 159, total: 23437, reader_cost: 0.00020647, batch_cost: 0.59171629, samples: 6, ips: 10.13999463 samples/s
+2022-09-06 05:43:46.831 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 159, lr: 0.00576000, loss: 0.10044984, batch_size: 6, accum: 1, step_cost: 0.65771794, iter: 160, total: 23437, reader_cost: 0.00018358, batch_cost: 0.65790153, samples: 6, ips: 9.11990589 samples/s
+2022-09-06 05:43:47.796 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 160, lr: 0.00579600, loss: 0.04585046, batch_size: 6, accum: 1, step_cost: 0.96417546, iter: 161, total: 23437, reader_cost: 0.00017691, batch_cost: 0.96435237, samples: 6, ips: 6.22179215 samples/s
+2022-09-06 05:43:48.200 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 161, lr: 0.00583200, loss: 0.11618293, batch_size: 6, accum: 1, step_cost: 0.40282083, iter: 162, total: 23437, reader_cost: 0.00023270, batch_cost: 0.40305352, samples: 6, ips: 14.88636042 samples/s
+2022-09-06 05:43:48.660 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 162, lr: 0.00586800, loss: 0.06582893, batch_size: 6, accum: 1, step_cost: 0.45936298, iter: 163, total: 23437, reader_cost: 0.00026369, batch_cost: 0.45962667, samples: 6, ips: 13.05407264 samples/s
+2022-09-06 05:43:49.403 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 163, lr: 0.00590400, loss: 0.04958804, batch_size: 6, accum: 1, step_cost: 0.74138379, iter: 164, total: 23437, reader_cost: 0.00017309, batch_cost: 0.74155688, samples: 6, ips: 8.09108531 samples/s
+2022-09-06 05:43:50.003 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 164, lr: 0.00594000, loss: 0.08886590, batch_size: 6, accum: 1, step_cost: 0.59951591, iter: 165, total: 23437, reader_cost: 0.00052881, batch_cost: 0.60004473, samples: 6, ips: 9.99925460 samples/s
+2022-09-06 05:43:50.646 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 165, lr: 0.00597600, loss: 0.07656965, batch_size: 6, accum: 1, step_cost: 0.64140081, iter: 166, total: 23437, reader_cost: 0.00077915, batch_cost: 0.64217997, samples: 6, ips: 9.34317531 samples/s
+2022-09-06 05:43:51.308 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 166, lr: 0.00601200, loss: 0.07277583, batch_size: 6, accum: 1, step_cost: 0.66100883, iter: 167, total: 23437, reader_cost: 0.00022006, batch_cost: 0.66122890, samples: 6, ips: 9.07401362 samples/s
+2022-09-06 05:43:51.831 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 167, lr: 0.00604800, loss: 0.06957015, batch_size: 6, accum: 1, step_cost: 0.52153611, iter: 168, total: 23437, reader_cost: 0.00054336, batch_cost: 0.52207947, samples: 6, ips: 11.49250329 samples/s
+2022-09-06 05:43:52.364 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 168, lr: 0.00608400, loss: 0.07699110, batch_size: 6, accum: 1, step_cost: 0.53152132, iter: 169, total: 23437, reader_cost: 0.00048065, batch_cost: 0.53200197, samples: 6, ips: 11.27815368 samples/s
+2022-09-06 05:43:53.032 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 169, lr: 0.00612000, loss: 0.06274194, batch_size: 6, accum: 1, step_cost: 0.66763735, iter: 170, total: 23437, reader_cost: 0.00056458, batch_cost: 0.66820192, samples: 6, ips: 8.97932165 samples/s
+2022-09-06 05:43:53.621 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 170, lr: 0.00615600, loss: 0.04554951, batch_size: 6, accum: 1, step_cost: 0.58756876, iter: 171, total: 23437, reader_cost: 0.00023150, batch_cost: 0.58780026, samples: 6, ips: 10.20754900 samples/s
+2022-09-06 05:43:54.202 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 171, lr: 0.00619200, loss: 0.04376280, batch_size: 6, accum: 1, step_cost: 0.58020949, iter: 172, total: 23437, reader_cost: 0.00030828, batch_cost: 0.58051777, samples: 6, ips: 10.33560094 samples/s
+2022-09-06 05:43:54.626 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 172, lr: 0.00622800, loss: 0.46166143, batch_size: 6, accum: 1, step_cost: 0.42329884, iter: 173, total: 23437, reader_cost: 0.00029993, batch_cost: 0.42359877, samples: 6, ips: 14.16434720 samples/s
+2022-09-06 05:43:55.008 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 173, lr: 0.00626400, loss: 0.54539543, batch_size: 6, accum: 1, step_cost: 0.38076329, iter: 174, total: 23437, reader_cost: 0.00019264, batch_cost: 0.38095593, samples: 6, ips: 15.74985308 samples/s
+2022-09-06 05:43:55.516 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 174, lr: 0.00630000, loss: 0.15902315, batch_size: 6, accum: 1, step_cost: 0.50680661, iter: 175, total: 23437, reader_cost: 0.00024366, batch_cost: 0.50705028, samples: 6, ips: 11.83314611 samples/s
+2022-09-06 05:43:56.030 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 175, lr: 0.00633600, loss: 0.11080841, batch_size: 6, accum: 1, step_cost: 0.51295042, iter: 176, total: 23437, reader_cost: 0.00015020, batch_cost: 0.51310062, samples: 6, ips: 11.69361275 samples/s
+2022-09-06 05:43:56.667 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 176, lr: 0.00637200, loss: 0.08781632, batch_size: 6, accum: 1, step_cost: 0.63644409, iter: 177, total: 23437, reader_cost: 0.00020552, batch_cost: 0.63664961, samples: 6, ips: 9.42433627 samples/s
+2022-09-06 05:43:57.179 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 177, lr: 0.00640800, loss: 0.06775380, batch_size: 6, accum: 1, step_cost: 0.51082587, iter: 178, total: 23437, reader_cost: 0.00035214, batch_cost: 0.51117802, samples: 6, ips: 11.73759396 samples/s
+2022-09-06 05:43:57.762 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 178, lr: 0.00644400, loss: 0.07839299, batch_size: 6, accum: 1, step_cost: 0.58239532, iter: 179, total: 23437, reader_cost: 0.00045228, batch_cost: 0.58284760, samples: 6, ips: 10.29428628 samples/s
+2022-09-06 05:43:58.420 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 179, lr: 0.00648000, loss: 0.11588117, batch_size: 6, accum: 1, step_cost: 0.65657425, iter: 180, total: 23437, reader_cost: 0.00021505, batch_cost: 0.65678930, samples: 6, ips: 9.13534976 samples/s
+2022-09-06 05:43:58.950 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 180, lr: 0.00651600, loss: 0.04887101, batch_size: 6, accum: 1, step_cost: 0.52934265, iter: 181, total: 23437, reader_cost: 0.00014710, batch_cost: 0.52948976, samples: 6, ips: 11.33166400 samples/s
+2022-09-06 05:43:59.453 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 181, lr: 0.00655200, loss: 0.04610903, batch_size: 6, accum: 1, step_cost: 0.50085306, iter: 182, total: 23437, reader_cost: 0.00075674, batch_cost: 0.50160980, samples: 6, ips: 11.96148874 samples/s
+2022-09-06 05:44:00.002 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 182, lr: 0.00658800, loss: 0.04875137, batch_size: 6, accum: 1, step_cost: 0.54833293, iter: 183, total: 23437, reader_cost: 0.00040126, batch_cost: 0.54873419, samples: 6, ips: 10.93425584 samples/s
+2022-09-06 05:44:00.620 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 183, lr: 0.00662400, loss: 0.09187327, batch_size: 6, accum: 1, step_cost: 0.61686826, iter: 184, total: 23437, reader_cost: 0.00051355, batch_cost: 0.61738181, samples: 6, ips: 9.71845929 samples/s
+2022-09-06 05:44:01.196 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 184, lr: 0.00666000, loss: 0.06293377, batch_size: 6, accum: 1, step_cost: 0.57535434, iter: 185, total: 23437, reader_cost: 0.00025225, batch_cost: 0.57560658, samples: 6, ips: 10.42378625 samples/s
+2022-09-06 05:44:01.781 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 185, lr: 0.00669600, loss: 0.04848057, batch_size: 6, accum: 1, step_cost: 0.58412957, iter: 186, total: 23437, reader_cost: 0.00020695, batch_cost: 0.58433652, samples: 6, ips: 10.26805582 samples/s
+2022-09-06 05:44:02.265 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 186, lr: 0.00673200, loss: 0.05652406, batch_size: 6, accum: 1, step_cost: 0.48295164, iter: 187, total: 23437, reader_cost: 0.00025773, batch_cost: 0.48320937, samples: 6, ips: 12.41697772 samples/s
+2022-09-06 05:44:02.793 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 187, lr: 0.00676800, loss: 0.06879777, batch_size: 6, accum: 1, step_cost: 0.52638745, iter: 188, total: 23437, reader_cost: 0.00025582, batch_cost: 0.52664328, samples: 6, ips: 11.39291105 samples/s
+2022-09-06 05:44:03.367 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 188, lr: 0.00680400, loss: 0.06816592, batch_size: 6, accum: 1, step_cost: 0.57350588, iter: 189, total: 23437, reader_cost: 0.00016856, batch_cost: 0.57367444, samples: 6, ips: 10.45889372 samples/s
+2022-09-06 05:44:04.157 | INFO     | paddlespeech.s2t.exps.wav2vec2.model:do_train:204 - Train: Rank: 1, epoch: 0, step: 189, lr: 0.00684000, loss: 0.06064310, batch_size: 6, accum: 1, step_cost: 0.78874874, iter: 190, total: 23437, reader_cost: 0.00018287, batch_cost: 0.78893161, samples: 6, ips: 7.60522197 samples/s
+
+
+--------------------------------------
+C++ Traceback (most recent call last):
+--------------------------------------
+0   paddle::pybind::ConstructAttrMapFromPyArgs(std::string const&, _object*, long, long, paddle::framework::AttributeMap&)
+1   paddle::pybind::CastPyArg2AttrInts(_object*, paddle::framework::AttributeMap&, std::string const&, std::string const&, long)
+
+----------------------
+Error Message Summary:
+----------------------
+FatalError: `Termination signal` is detected by the operating system.
+  [TimeInfo: *** Aborted at 1662443044 (unix time) try "date -d @1662443044" if you are using GNU date ***]
+  [SignalInfo: *** SIGTERM (@0xed22) received by PID 60789 (TID 0x7f13bd588700) from PID 60706 ***]
+

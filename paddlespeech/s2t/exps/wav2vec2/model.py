@@ -61,10 +61,11 @@ class Wav2Vec2ASRTrainer(Trainer):
         wavs_lens_rate = wavs_lens / wav.shape[1] 
         target_lens_rate = target_lens / target.shape[1]
         wav = wav[:,:,0]
-
-        # wav = self.speech_augmentation(wav, wavs_lens_rate)
+        wav = self.speech_augmentation(wav, wavs_lens_rate)
         loss = self.model(wav, wavs_lens_rate, target, target_lens_rate)
-        pdb.set_trace()
+        # print(self.model.wav2vec2.feature_projection.projection.weight)
+        # print(self.model.wav2vec2.feature_extractor.conv_layers[0].conv.weight)
+
         # loss div by `batch_size * accum_grad`
         loss /= train_conf.accum_grad
         losses_np = {'loss': float(loss) * train_conf.accum_grad}
@@ -91,7 +92,6 @@ class Wav2Vec2ASRTrainer(Trainer):
             self.optimizer.clear_grad()
             self.lr_scheduler.step()
             self.iteration += 1
-
         # optimizer step new
         # if (batch_index + 1) % train_conf.accum_grad == 0:
         #     self.optimizer.step()
@@ -258,14 +258,14 @@ class Wav2Vec2ASRTrainer(Trainer):
         model = Wav2vec2ASR.from_config(model_conf)
 
         if self.parallel:
-            model = paddle.DataParallel(model, find_unused_parameters=False) 
+            model = paddle.DataParallel(model) 
 
         # logger.info(f"{model}")
         layer_tools.print_params(model, logger.info)
         self.model = model
         logger.info("Setup model!")
 
-        # self.speech_augmentation = TimeDomainSpecAugment(sample_rate=16000, speeds=[95, 100, 105])
+        self.speech_augmentation = TimeDomainSpecAugment(sample_rate=16000, speeds=[95, 100, 105])
 
         if not self.train:
             return
@@ -281,7 +281,7 @@ class Wav2Vec2ASRTrainer(Trainer):
             "verbose": False,
             "warmup_steps": scheduler_conf.warmup_steps,
             "gamma": scheduler_conf.lr_decay,
-            # "d_model": model_conf.dnn_neurons,
+            "d_model": model_conf.dnn_neurons,
         }
         lr_scheduler = LRSchedulerFactory.from_args(scheduler_type,
                                                     scheduler_args)

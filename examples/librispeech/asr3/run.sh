@@ -4,16 +4,16 @@ set -e
 . ./path.sh || exit 1;
 . ./cmd.sh || exit 1;
 
-gpus=1
-stage=1
-stop_stage=1
+gpus=0
+stage=2
+stop_stage=3
 conf_path=conf/wav2vec2ASR.yaml
 ips=            #xx.xx.xx.xx,xx.xx.xx.xx
 decode_conf_path=conf/tuning/decode.yaml
 avg_num=1
 audio_file=data/demo_002_en.wav
 dict_path=data/lang_char/vocab.txt
-dp_log='dp_log'
+dp_log='aaa'
 . ${MAIN_ROOT}/utils/parse_options.sh || exit 1;
 
 avg_ckpt=avg_${avg_num}

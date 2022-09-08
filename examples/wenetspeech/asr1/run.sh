@@ -4,11 +4,11 @@
 set -e
 
 gpus=0,1,2,3,4,5,6,7
-stage=0
-stop_stage=100
-conf_path=conf/conformer.yaml
+stage=3
+stop_stage=3
+conf_path=bb/train.yaml
 ips=  #xxx.xxx.xxx.xxx,xxx.xxx.xxx.xxx
-decode_conf_path=conf/tuning/decode.yaml
+decode_conf_path=aa/conf/tuning/chunk_decode.yaml
 average_checkpoint=true
 avg_num=10
 
@@ -37,12 +37,12 @@ fi
 
 if [ ${stage} -le 3 ] && [ ${stop_stage} -ge 3 ]; then
     # test ckpt avg_n
-    CUDA_VISIBLE_DEVICES=0 ./local/test.sh ${conf_path} ${decode_conf_path} exp/${ckpt}/checkpoints/${avg_ckpt} || exit -1
+    CUDA_VISIBLE_DEVICES=0 ./local/test.sh ${conf_path} ${decode_conf_path} aa/exp/${ckpt}/checkpoints/${avg_ckpt} || exit -1
 fi
 
 if [ ${stage} -le 4 ] && [ ${stop_stage} -ge 4 ]; then
     # ctc alignment of test data
-    CUDA_VISIBLE_DEVICES=0 ./local/align.sh ${conf_path} ${decode_conf_path} exp/${ckpt}/checkpoints/${avg_ckpt} || exit -1
+    CUDA_VISIBLE_DEVICES=0 ./local/align.sh ${conf_path} ${decode_conf_path} bb/final.pt || exit -1
 fi
 
 if [ ${stage} -le 5 ] && [ ${stop_stage} -ge 5 ]; then

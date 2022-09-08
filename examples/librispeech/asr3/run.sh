@@ -5,8 +5,8 @@ set -e
 . ./cmd.sh || exit 1;
 
 gpus=0
-stage=2
-stop_stage=3
+stage=1
+stop_stage=1
 conf_path=conf/wav2vec2ASR.yaml
 ips=            #xx.xx.xx.xx,xx.xx.xx.xx
 decode_conf_path=conf/tuning/decode.yaml
@@ -17,7 +17,7 @@ dp_log='aaa'
 . ${MAIN_ROOT}/utils/parse_options.sh || exit 1;
 
 avg_ckpt=avg_${avg_num}
-ckpt=test
+ckpt=rush
 echo "checkpoint name ${ckpt}"
 ckpt_prefix=exp/${ckpt}/checkpoints/${avg_ckpt}
 

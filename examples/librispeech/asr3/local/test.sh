@@ -61,7 +61,7 @@ python3 utils/format_rsl.py \
     --origin_ref data/manifest.test-clean.raw \
     --trans_ref data/manifest.test-clean.text
 
-for dmethd in ctc_prefix_beam_search; do
+for dmethd in ctc_greedy_search; do
 (
     echo "decode method: ${dmethd}"
     for rtask in ${recog_set}; do
@@ -92,8 +92,10 @@ for dmethd in ctc_prefix_beam_search; do
             --opts decode.decode_batch_size ${batch_size} \
             --opts test_manifest ${feat_recog_dir}/split${nj}/JOB/manifest.${rtask}
 
+        find ./ -name ^${ckpt_prefix}.${dmethd}.*.rsl$ | xargs cat > ${ckpt_prefix}.${dmethd}.all.text
+
         python3 utils/format_rsl.py \
-            --origin_hyp  exp/wav2vec2ASR/checkpoints/iptv_authenticate.txt \
+            --origin_hyp  ${ckpt_prefix}.${dmethd}.all.text \
             --trans_hyp ${ckpt_prefix}.${dmethd}.rsl.text
 
         python3 utils/compute-wer.py --char=1 --v=1 \

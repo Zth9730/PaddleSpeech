@@ -13,11 +13,11 @@ decode_conf_path=conf/tuning/decode.yaml
 avg_num=1
 audio_file=data/demo_002_en.wav
 dict_path=data/lang_char/vocab.txt
-dp_log='12batch'
+dp_log='12'
 . ${MAIN_ROOT}/utils/parse_options.sh || exit 1;
 
 avg_ckpt=avg_${avg_num}
-ckpt=12batch
+ckpt=no_sa
 echo "checkpoint name ${ckpt}"
 ckpt_prefix=exp/${ckpt}/checkpoints/${avg_ckpt}
 

@@ -24,51 +24,32 @@ fi
 #fi
 
 
-# for type in attention ctc_greedy_search; do
-#     echo "decoding ${type}"
-#     if [ ${chunk_mode} == true ];then
-#         # stream decoding only support batchsize=1
-#         batch_size=1
-#     else
-#         batch_size=64
-#     fi
-#     output_dir=${ckpt_prefix}
-#     mkdir -p ${output_dir}
-#     python3 -u ${BIN_DIR}/test.py \
-#     --ngpu ${ngpu} \
-#     --config ${config_path} \
-#     --decode_cfg ${decode_config_path} \
-#     --result_file ${output_dir}/${type}.rsl \
-#     --checkpoint_path ${ckpt_prefix} \
-#     --opts decode.decoding_method ${type} \
-#     --opts decode.decode_batch_size ${batch_size}
+for type in attention ctc_greedy_search; do
+    echo "decoding ${type}"
+    if [ ${chunk_mode} == true ];then
+        # stream decoding only support batchsize=1
+        batch_size=1
+    else
+        batch_size=64
+    fi
+    output_dir=${ckpt_prefix}
+    mkdir -p ${output_dir}
+    python3 -u ${BIN_DIR}/test.py \
+    --ngpu ${ngpu} \
+    --config ${config_path} \
+    --decode_cfg ${decode_config_path} \
+    --result_file ${output_dir}/${type}.rsl \
+    --checkpoint_path ${ckpt_prefix} \
+    --opts decode.decoding_method ${type} \
+    --opts decode.decode_batch_size ${batch_size}
 
-#     if [ $? -ne 0 ]; then
-#         echo "Failed in evaluation!"
-#         exit 1
-#     fi
-# done
+    if [ $? -ne 0 ]; then
+        echo "Failed in evaluation!"
+        exit 1
+    fi
+done
 
-# for type in ctc_prefix_beam_search attention_rescoring; do
-#     echo "decoding ${type}"
-#     batch_size=1
-#     output_dir=${ckpt_prefix}
-#     mkdir -p ${output_dir}
-#     python3 -u ${BIN_DIR}/test.py \
-#     --ngpu ${ngpu} \
-#     --config ${config_path} \
-#     --decode_cfg ${decode_config_path} \
-#     --result_file ${output_dir}/${type}.rsl \
-#     --checkpoint_path ${ckpt_prefix} \
-#     --opts decode.decoding_method ${type} \
-#     --opts decode.decode_batch_size ${batch_size}
-
-#     if [ $? -ne 0 ]; then
-#         echo "Failed in evaluation!"
-#         exit 1
-#     fi
-# done
-for type in attention_rescoring; do
+for type in ctc_prefix_beam_search attention_rescoring; do
     echo "decoding ${type}"
     batch_size=1
     output_dir=${ckpt_prefix}
@@ -81,6 +62,25 @@ for type in attention_rescoring; do
     --checkpoint_path ${ckpt_prefix} \
     --opts decode.decoding_method ${type} \
     --opts decode.decode_batch_size ${batch_size}
+
+    if [ $? -ne 0 ]; then
+        echo "Failed in evaluation!"
+        exit 1
+    fi
+done
+# for type in attention_rescoring; do
+#     echo "decoding ${type}"
+#     batch_size=1
+#     output_dir=${ckpt_prefix}
+#     mkdir -p ${output_dir}
+#     python3 -u ${BIN_DIR}/test.py \
+#     --ngpu ${ngpu} \
+#     --config ${config_path} \
+#     --decode_cfg ${decode_config_path} \
+#     --result_file ${output_dir}/${type}.rsl \
+#     --checkpoint_path ${ckpt_prefix} \
+#     --opts decode.decoding_method ${type} \
+#     --opts decode.decode_batch_size ${batch_size}
 
     if [ $? -ne 0 ]; then
         echo "Failed in evaluation!"

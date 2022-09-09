@@ -20,7 +20,7 @@ import paddle
 from paddle.optimizer import Optimizer
 from paddle.regularizer import L2Decay
 
-# from paddlespeech.s2t.training.gradclip import ClipGradByGlobalNormWithLog
+from paddlespeech.s2t.training.gradclip import ClipGradByGlobalNormWithLog
 from paddlespeech.s2t.utils.dynamic_import import dynamic_import
 from paddlespeech.s2t.utils.dynamic_import import instance_class
 from paddlespeech.s2t.utils.log import Log
@@ -101,10 +101,10 @@ class OptimizerFactory():
         assert "parameters" in args, "parameters not in args."
         assert "learning_rate" in args, "learning_rate not in args."
 
-        # grad_clip = ClipGradByGlobalNormWithLog(
-        #     args['grad_clip']) if "grad_clip" in args else None
-        grad_clip = paddle.nn.ClipGradByGlobalNorm(
+        grad_clip = ClipGradByGlobalNormWithLog(
             args['grad_clip']) if "grad_clip" in args else None
+        # grad_clip = paddle.nn.ClipGradByGlobalNorm(
+        #     args['grad_clip']) if "grad_clip" in args else None
         weight_decay = L2Decay(
             args['weight_decay']) if "weight_decay" in args else None
         if weight_decay:

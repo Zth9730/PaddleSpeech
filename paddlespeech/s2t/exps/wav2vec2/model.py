@@ -61,7 +61,8 @@ class Wav2Vec2ASRTrainer(Trainer):
         wavs_lens_rate = wavs_lens / wav.shape[1] 
         target_lens_rate = target_lens / target.shape[1]
         wav = wav[:,:,0]
-        wav = self.speech_augmentation(wav, wavs_lens_rate)
+        if train_conf.augment:
+            wav = self.speech_augmentation(wav, wavs_lens_rate)
         loss = self.model(wav, wavs_lens_rate, target, target_lens_rate)
         # print(self.model.wav2vec2.feature_projection.projection.weight)
         # print(self.model.wav2vec2.feature_extractor.conv_layers[0].conv.weight)
@@ -264,8 +265,8 @@ class Wav2Vec2ASRTrainer(Trainer):
         layer_tools.print_params(model, logger.info)
         self.model = model
         logger.info("Setup model!")
-
-        self.speech_augmentation = TimeDomainSpecAugment(sample_rate=16000, speeds=[95, 100, 105])
+        if model_conf.augment:
+            self.speech_augmentation = TimeDomainSpecAugment(sample_rate=16000, speeds=[95, 100, 105])
 
         if not self.train:
             return

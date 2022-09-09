@@ -80,17 +80,17 @@ for dmethd in ctc_prefix_beam_search; do
 
         # set batchsize 0 to disable batch decoding
         batch_size=1
-        # ${decode_cmd} JOB=1:${nj} ${decode_dir}/log/decode.JOB.log \
-        #     python3 -u ${BIN_DIR}/test.py \
-        #     --ngpu ${ngpu} \
-        #     --dict-path ${dict_path} \
-        #     --config ${config_path} \
-        #     --decode_cfg ${decode_config_path} \
-        #     --checkpoint_path ${ckpt_prefix} \
-        #     --result_file ${ckpt_prefix}.${dmethd}.JOB.rsl \
-        #     --opts decode.decoding_method ${dmethd} \
-        #     --opts decode.decode_batch_size ${batch_size} \
-        #     --opts test_manifest ${feat_recog_dir}/split${nj}/JOB/manifest.${rtask}
+        ${decode_cmd} JOB=1:${nj} ${decode_dir}/log/decode.JOB.log \
+            python3 -u ${BIN_DIR}/test.py \
+            --ngpu ${ngpu} \
+            --dict-path ${dict_path} \
+            --config ${config_path} \
+            --decode_cfg ${decode_config_path} \
+            --checkpoint_path ${ckpt_prefix} \
+            --result_file ${ckpt_prefix}.${dmethd}.JOB.rsl \
+            --opts decode.decoding_method ${dmethd} \
+            --opts decode.decode_batch_size ${batch_size} \
+            --opts test_manifest ${feat_recog_dir}/split${nj}/JOB/manifest.${rtask}
 
         python3 utils/format_rsl.py \
             --origin_hyp  exp/wav2vec2ASR/checkpoints/iptv_authenticate.txt \

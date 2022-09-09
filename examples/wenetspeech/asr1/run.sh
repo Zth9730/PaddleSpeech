@@ -6,7 +6,7 @@ set -e
 gpus=0,1,2,3,4,5,6,7
 stage=3
 stop_stage=3
-conf_path=bb/train.yaml
+conf_path=aa/conf/chunk_conformer.yaml
 ips=  #xxx.xxx.xxx.xxx,xxx.xxx.xxx.xxx
 decode_conf_path=aa/conf/tuning/chunk_decode.yaml
 average_checkpoint=true

@@ -32,7 +32,7 @@ def dynamic_import(import_path, alias=dict()):
             "{}".format(set(alias), import_path))
     if ":" not in import_path:
         import_path = alias[import_path]
-
+    
     module_name, objname = import_path.split(":")
     m = importlib.import_module(module_name)
     return getattr(m, objname)

@@ -5,8 +5,8 @@ set -e
 . ./cmd.sh || exit 1;
 
 gpus=0
-stage=0
-stop_stage=0
+stage=1
+stop_stage=1
 conf_path=conf/wav2vec2ASR.yaml
 ips=            #xx.xx.xx.xx,xx.xx.xx.xx
 decode_conf_path=conf/tuning/decode.yaml

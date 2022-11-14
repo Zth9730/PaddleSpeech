@@ -25,12 +25,51 @@ __all__ = [
     'tts_static_pretrained_models',
     'tts_onnx_pretrained_models',
     'vector_dynamic_pretrained_models',
+    'ssl_pretrained_models',
 ]
 
 # The tags for pretrained_models should be "{model_name}[_{dataset}][-{lang}][-...]".
 # e.g. "conformer_wenetspeech-zh-16k" and "panns_cnn6-32k".
 # Command line and python api use "{model_name}[_{dataset}]" as --model, usage:
 # "paddlespeech asr --model conformer_wenetspeech --lang zh --sr 16000 --input ./input.wav"
+
+# ---------------------------------
+# -------------- SSL --------------
+# ---------------------------------
+ssl_dynamic_pretrained_models = {
+     "wav2vec2-en-16k": {
+        '1.3': {
+            'url':
+            'https://paddlespeech.bj.bcebos.com/s2t/librispeech/asr3/wav2vec2-large-960h-lv60-self_ckpt_1.3.0.model.tar.gz',
+            'md5':
+            'd00de8506ac8e67751419c932fb4d84e',
+            'cfg_path':
+            'model.yaml',
+            'ckpt_path':
+            'wav2vec2-large-960h-lv60-self',
+            'model':
+            'wav2vec2-large-960h-lv60-self.pdparams',
+            'params':
+            'wav2vec2-large-960h-lv60-self.pdparams',
+        },
+    },
+    "wav2vec2ASR_librispeech-en-16k": {
+        '1.3': {
+            'url':
+            'https://paddlespeech.bj.bcebos.com/s2t/librispeech/asr3/wav2vec2ASR-large-960h-librispeech_ckpt_1.3.1.model.tar.gz',
+            'md5':
+            'fee083b3463ceaaec960fce84fdba0cd',
+            'cfg_path':
+            'model.yaml',
+            'ckpt_path':
+            'exp/wav2vec2ASR/checkpoints/avg_1',
+            'model':
+            'exp/wav2vec2ASR/checkpoints/avg_1.pdparams',
+            'params':
+            'exp/wav2vec2ASR/checkpoints/avg_1.pdparams',
+        },
+    },
+}
 
 # ---------------------------------
 # -------------- ASR --------------
@@ -68,12 +107,32 @@ asr_dynamic_pretrained_models = {
             '',
         },
     },
-    "conformer_u2pp_online_wenetspeech-zh-16k": {
-        '1.3': {
+    "conformer_u2pp_wenetspeech-zh-16k": {
+        '1.1': {
             'url':
-            'https://paddlespeech.bj.bcebos.com/s2t/wenetspeech/asr1/asr1_chunk_conformer_u2pp_wenetspeech_ckpt_1.3.0.model.tar.gz',
+            'https://paddlespeech.bj.bcebos.com/s2t/wenetspeech/asr1/asr1_chunk_conformer_u2pp_wenetspeech_ckpt_1.1.3.model.tar.gz',
             'md5':
-            '62d230c1bf27731192aa9d3b8deca300',
+            '662b347e1d2131b7a4dc5398365e2134',
+            'cfg_path':
+            'model.yaml',
+            'ckpt_path':
+            'exp/chunk_conformer_u2pp/checkpoints/avg_10',
+            'model':
+            'exp/chunk_conformer_u2pp/checkpoints/avg_10.pdparams',
+            'params':
+            'exp/chunk_conformer_u2pp/checkpoints/avg_10.pdparams',
+            'lm_url':
+            '',
+            'lm_md5':
+            '',
+        },
+    },
+    "conformer_u2pp_online_wenetspeech-zh-16k": {
+        '1.1': {
+            'url':
+            'https://paddlespeech.bj.bcebos.com/s2t/wenetspeech/asr1/asr1_chunk_conformer_u2pp_wenetspeech_ckpt_1.1.4.model.tar.gz',
+            'md5':
+            '3100fc1eac5779486cab859366992d0b',
             'cfg_path':
             'model.yaml',
             'ckpt_path':

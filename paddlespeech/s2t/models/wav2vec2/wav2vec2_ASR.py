@@ -29,13 +29,12 @@ from paddlespeech.s2t.utils.utility import log_add
 
 
 class Wav2vec2ASR(nn.Layer):
+    """CTC Based Wav2vec2ASR model"""
     def __init__(self, config: dict):
         super().__init__()
 
         wav2vec2_config = Wav2Vec2ConfigPure(config)
         wav2vec2 = Wav2Vec2Model(wav2vec2_config)
-        model_dict = paddle.load(config.wav2vec2_params_path)
-        wav2vec2.set_state_dict(model_dict)
         self.normalize_wav = config.normalize_wav
         self.output_norm = config.output_norm
         if config.freeze_wav2vec2:
@@ -53,6 +52,23 @@ class Wav2vec2ASR(nn.Layer):
                        blank_id=config.blank_id,
                        dropout_rate=config.ctc_dropout_rate,
                        reduction='mean')
+    
+
+    @classmethod
+    def from_config(cls, configs: dict):
+        """init model.
+
+        Args:
+            configs (dict): config dict.
+
+        Raises:
+            ValueError: raise when using not support encoder type.
+
+        Returns:
+            nn.Layer: wav2vec2_ASR
+        """
+        model = cls(configs)
+        return model
 
     def forward(self, wav, wavs_lens_rate, target, target_lens_rate):
         if self.normalize_wav:
@@ -104,11 +120,6 @@ class Wav2vec2ASR(nn.Layer):
                 f"wav2vec2 not support decoding method: {decoding_method}")
 
         return res, res_tokenids
-
-    @classmethod
-    def from_config(cls, config):
-        model = cls(config)
-        return model
 
     def ctc_greedy_search(self, wav) -> List[List[int]]:
         """ Apply CTC greedy search
@@ -239,3 +250,33 @@ class Wav2vec2ASR(nn.Layer):
         """
         hyps = self._ctc_prefix_beam_search(wav, beam_size)
         return hyps[0][0]
+
+
+class Wav2vec2Base(nn.Layer):
+    """Wav2vec2 model"""
+    def __init__(self, config: dict):
+        super().__init__()
+        wav2vec2_config = Wav2Vec2ConfigPure(config)
+        wav2vec2 = Wav2Vec2Model(wav2vec2_config)
+        self.wav2vec2 = wav2vec2
+    
+    @classmethod
+    def from_config(cls, configs: dict):
+        """init model.
+
+        Args:
+            configs (dict): config dict.
+
+        Raises:
+            ValueError: raise when using not support encoder type.
+
+        Returns:
+            nn.Layer: Wav2Vec2Base
+        """
+        model = cls(configs)
+        return model
+
+    def forward(self, wav):
+        out = self.wav2vec2(wav)
+        return out
+    

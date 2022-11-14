@@ -37,6 +37,7 @@ wget -c https://paddlespeech.bj.bcebos.com/PaddleAudio/zh.wav https://paddlespee
   参数：
   - `input`(必须输入)：用于识别的音频文件。
   - `model`：ASR 任务的模型，默认值：`conformer_wenetspeech`。
+  - `task`：输出类别，默认值：`asr`。
   - `lang`：模型语言，默认值：`zh`。
   - `sample_rate`：音频采样率，默认值：`16000`。
   - `config`：ASR 任务的参数文件，若不设置则使用预训练模型中的默认配置，默认值：`None`。
@@ -45,49 +46,55 @@ wget -c https://paddlespeech.bj.bcebos.com/PaddleAudio/zh.wav https://paddlespee
   - `device`：执行预测的设备，默认值：当前系统下 paddlepaddle 的默认 device。
   - `verbose`: 如果使用，显示 logger 信息。
 
-  输出：
-  ```bash
-  # 中文
-  [2021-12-08 13:12:34,063] [    INFO] [utils.py] [L225] - ASR Result: 我认为跑步最重要的就是给我带来了身体健康
-  # 英文
-  [2022-01-12 11:51:10,815] [    INFO] - ASR Result: i knocked at the door on the ancient side of the building
-  ```
-
 - Python API
   ```python
   import paddle
-  from paddlespeech.cli.asr import ASRExecutor
+  from paddlespeech.cli.ssl import SSLExecutor
 
-  asr_executor = ASRExecutor()
-  text = asr_executor(
-      model='conformer_wenetspeech',
-      lang='zh',
+  ssl_executor = SSLExecutor()
+
+  # 识别文本
+  text = ssl_executor(
+      model='wav2vec2ASR_librispeech',
+      task='asr',
+      lang='en',
       sample_rate=16000,
       config=None,  # Set `config` and `ckpt_path` to None to use pretrained model.
       ckpt_path=None,
-      audio_file='./zh.wav',
-      force_yes=False,
+      audio_file='./en.wav',
       device=paddle.get_device())
   print('ASR Result: \n{}'.format(text))
-  ```
 
+  # 得到声学表征
+  feature = ssl_executor(
+      model='wav2vec2',
+      task='vector',
+      lang='en',
+      sample_rate=16000,
+      config=None,  # Set `config` and `ckpt_path` to None to use pretrained model.
+      ckpt_path=None,
+      audio_file='./en.wav',
+      device=paddle.get_device())
+  print('Representation: \n{}'.format(feature))
+  ```
   输出：
   ```bash
   ASR Result:
   我认为跑步最重要的就是给我带来了身体健康
+
+  Representation:
+  Tensor(shape=[1, 164, 1024], dtype=float32, place=Place(gpu:0), stop_gradient=True,
+       [[[ 0.02351918, -0.12980647,  0.17868176, ...,  0.10118122,
+          -0.04614586,  0.17853957],
+         [ 0.02361383, -0.12978461,  0.17870593, ...,  0.10103855,
+          -0.04638699,  0.17855372],
+         [ 0.02345137, -0.12982975,  0.17883906, ...,  0.10104341,
+          -0.04643029,  0.17856732],
+         ...,
+         [ 0.02313030, -0.12918393,  0.17845058, ...,  0.10073373,
+          -0.04701405,  0.17862988],
+         [ 0.02176583, -0.12929161,  0.17797582, ...,  0.10097728,
+          -0.04687393,  0.17864393],
+         [ 0.05269200,  0.01297141, -0.23336855, ..., -0.11257174,
+          -0.17227529,  0.20338398]]])
   ```
-
-### 4.预训练模型
-以下是 PaddleSpeech 提供的可以被命令行和 python API 使用的预训练模型列表：
-
-| 模型 | 语言 | 采样率
-| :--- | :---: | :---: |
-| conformer_wenetspeech | zh | 16k
-| conformer_online_multicn | zh | 16k
-| conformer_aishell | zh | 16k
-| conformer_online_aishell | zh | 16k
-| transformer_librispeech | en | 16k
-| deepspeech2online_wenetspeech | zh | 16k
-| deepspeech2offline_aishell| zh| 16k
-| deepspeech2online_aishell | zh | 16k
-| deepspeech2offline_librispeech | en | 16k

@@ -52,7 +52,7 @@ class ASRExecutor(BaseExecutor):
         self.parser.add_argument(
             '--model',
             type=str,
-            default='conformer_u2pp_online_wenetspeech',
+            default='conformer_u2pp_wenetspeech',
             choices=[
                 tag[:tag.index('-')]
                 for tag in self.task_resource.pretrained_models.keys()
@@ -236,8 +236,11 @@ class ASRExecutor(BaseExecutor):
         # Get the object for feature extraction
         if "deepspeech2" in model_type or "conformer" in model_type or "transformer" in model_type:
             logger.debug("get the preprocess conf")
+            import pdb
+            pdb.set_trace()
             preprocess_conf = self.config.preprocess_config
             preprocess_args = {"train": False}
+
             preprocessing = Transformation(preprocess_conf)
             logger.debug("read the audio file")
             audio, audio_sample_rate = soundfile.read(
@@ -470,7 +473,7 @@ class ASRExecutor(BaseExecutor):
     @stats_wrapper
     def __call__(self,
                  audio_file: os.PathLike,
-                 model: str='conformer_u2pp_online_wenetspeech',
+                 model: str='conformer_u2pp_wenetspeech',
                  lang: str='zh',
                  sample_rate: int=16000,
                  config: os.PathLike=None,

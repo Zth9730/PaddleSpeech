@@ -449,17 +449,13 @@ class DropFreq(nn.Layer):
         # Add channels dimension
         if len(waveforms.shape) == 2:
             dropped_waveform = dropped_waveform.unsqueeze(-1)
-
+        
         # Pick number of frequencies to drop
         drop_count = paddle.randint(
             low=self.drop_count_low,
             high=self.drop_count_high + 1,
             shape=(1, ), )
-
-        # Pick a frequency to drop
-        drop_range = self.drop_freq_high - self.drop_freq_low
-        drop_frequency = (
-            paddle.rand(drop_count) * drop_range + self.drop_freq_low)
+            
         # Filter parameters
         filter_length = 101
         pad = filter_length // 2
@@ -467,13 +463,19 @@ class DropFreq(nn.Layer):
         # Start with delta function
         drop_filter = paddle.zeros([1, filter_length, 1])
         drop_filter[0, pad, 0] = 1
-        # Subtract each frequency
-        for frequency in drop_frequency:
-            notch_kernel = notch_filter(
-                frequency,
-                filter_length,
-                self.drop_width, )
-            drop_filter = convolve1d(drop_filter, notch_kernel, pad)
+        
+        if drop_count.shape == 0:
+            # Pick a frequency to drop
+            drop_range = self.drop_freq_high - self.drop_freq_low
+            drop_frequency = (
+                paddle.rand(drop_count) * drop_range + self.drop_freq_low)
+            # Subtract each frequency
+            for frequency in drop_frequency:
+                notch_kernel = notch_filter(
+                    frequency,
+                    filter_length,
+                    self.drop_width, )
+                drop_filter = convolve1d(drop_filter, notch_kernel, pad)
 
         # Apply filter
         dropped_waveform = convolve1d(dropped_waveform, drop_filter, pad)

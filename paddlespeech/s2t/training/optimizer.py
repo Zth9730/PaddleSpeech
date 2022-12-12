@@ -101,7 +101,9 @@ class OptimizerFactory():
         assert "parameters" in args, "parameters not in args."
         assert "learning_rate" in args, "learning_rate not in args."
 
-        grad_clip = ClipGradByGlobalNormWithLog(
+        # grad_clip = ClipGradByGlobalNormWithLog(
+        #     args['grad_clip']) if "grad_clip" in args else None
+        grad_clip = paddle.nn.ClipGradByGlobalNorm(
             args['grad_clip']) if "grad_clip" in args else None
         weight_decay = L2Decay(
             args['weight_decay']) if "weight_decay" in args else None

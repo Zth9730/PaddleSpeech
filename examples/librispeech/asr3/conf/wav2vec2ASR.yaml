@@ -1,7 +1,7 @@
 ############################################
 #          Network Architecture           #
 ############################################
-freeze_wav2vec2: True
+freeze_wav2vec2: False
 normalize_wav: True
 output_norm: True
 init_type: 'kaiming_uniform' # !Warning: need to convergence
